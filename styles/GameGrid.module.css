@@ -1,0 +1,45 @@
+.grid {
+	position: absolute;
+	width: 95%;
+	height: 100%;
+	padding-left: 2.5%;
+	padding-right: 2.5%;
+
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: repeat(4, 1fr);
+	gap: 2%;
+
+	overflow-y: auto;
+}
+
+.cell {
+	border: none;
+	background: transparent;
+}
+
+.image {
+	/* background-color: rgb(255, 255, 255, 0.2); */
+	padding: 10px;
+}
+
+.title {
+	width: 100%;
+
+	padding: 3px;
+	line-height: 100%;
+
+	font-family: 'Fredoka';
+	font-size: 1.5em;
+
+	text-align: center;
+	border: none;
+	color: var(--clr-not-white);
+	background-color: transparent;
+}
+.cell:hover .title {
+	color: black;
+	font-weight: bold;
+	cursor: pointer;
+	background-color: var(--clr-pink);
+}

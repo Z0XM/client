@@ -1,0 +1,116 @@
+.container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	/* background: rgb(0 0 0 / 0.3); */
+	position: relative;
+}
+
+.winner {
+	color: limegreen;
+	font-family: 'Frijole';
+	font-size: 2.5em;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.start,
+.settings {
+	font-family: 'Bangers';
+	font-size: 2.5em;
+	margin-top: 10px;
+	margin-bottom: 10px;
+
+	background-color: transparent;
+	border: none;
+
+	color: var(--clr-not-white);
+}
+
+.start:hover,
+.settings:hover {
+	color: var(--clr-pink);
+}
+
+.start:active,
+.settings:active {
+	transform: scale(0.9);
+}
+
+.settings_area {
+	position: absolute;
+	width: 50%;
+	height: 70%;
+	background: rgb(0 0 0 / 0.8);
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	padding: 3px;
+
+	border-bottom-left-radius: 25px;
+	border-bottom-right-radius: 25px;
+}
+
+.settings_area .close {
+	background: transparent;
+	border: none;
+
+	color: red;
+	font-size: 2.5em;
+
+	margin-left: auto;
+
+	transition: transform 250ms ease-out;
+}
+
+.settings_area .close:hover {
+	transform: rotate(180deg);
+}
+
+.settings_area .content {
+	height: 90%;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	color: var(--clr-not-white);
+
+	font-family: 'Baloo Bhaijaan 2';
+	font-size: x-large;
+}
+.settings_area .content input {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.save {
+	background: transparent;
+	font-family: 'Bangers';
+	font-size: 2em;
+	margin-top: 10px;
+	margin-bottom: 20px;
+
+	background-color: transparent;
+	border: none;
+
+	color: rgb(206, 206, 6);
+}
+
+.save:hover {
+	color: limegreen;
+}
+
+.save:active {
+	transform: scale(0.9);
+}

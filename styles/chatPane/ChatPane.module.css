@@ -1,0 +1,12 @@
+.container {
+	position: fixed;
+	width: 25%;
+	height: 83vh;
+	top: 11.5vh;
+	left: 75%;
+	background-color: rgba(0, 0, 0, 0.5);
+	color: var(--clr-not-white);
+	font-weight: lighter;
+	border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+}

@@ -1,0 +1,54 @@
+.container {
+	position: relative;
+	height: 90vh;
+	width: 75%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.area {
+	position: relative;
+	width: 90%;
+	height: 90%;
+
+	background: radial-gradient(var(--clr-russian-violet-2), var(--clr-russian-violet));
+	border-bottom: 2px solid red;
+	border-top: 2px solid red;
+
+	display: flex;
+	justify-content: center;
+}
+
+.interface {
+	position: absolute;
+
+	top: 0%;
+	bottom: 100%;
+	left: 0%;
+	right: 0%;
+
+	background-color: var(--clr-russian-violet-2);
+	z-index: 1;
+}
+.interface.forwards {
+	animation: playInterfaceForwards 500ms ease-in-out forwards;
+}
+.interface.reverse {
+	animation: playInterfaceForwards 500ms ease-in-out reverse;
+}
+
+@keyframes playInterfaceForwards {
+	0% {
+		bottom: 100%;
+		top: 0%;
+	}
+	50% {
+		top: 0%;
+		bottom: 0%;
+	}
+	100% {
+		top: 100%;
+		bottom: 0%;
+	}
+}

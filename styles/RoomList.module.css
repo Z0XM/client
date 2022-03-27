@@ -1,0 +1,60 @@
+.grid {
+	width: 88%;
+	height: 64%;
+
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(auto-fill, 33%);
+	gap: 2%;
+	padding: 2%;
+
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	background: var(--clr-russian-violet);
+
+	border: 5px solid var(--clr-purple);
+}
+
+.room {
+	width: 100%;
+	height: 100%;
+
+	text-align: center;
+	font-family: 'Baloo Bhaijaan 2', cursive;
+
+	background: transparent;
+
+	border: 3px solid var(--clr-russian-violet-2);
+}
+
+.room:hover {
+	/* border: 3px solid rgba(255, 255, 255, 0.5); */
+	border: 2px solid rgba(81, 1, 201, 0.857);
+
+	transform: scale(1.07);
+}
+
+.room:active {
+	background: black;
+	transform: scale(1);
+}
+
+.host {
+	color: var(--clr-heliotrope);
+	font-size: xx-large;
+}
+
+.gameName {
+	color: var(--clr-pink);
+	font-size: x-large;
+}
+
+.playerCount {
+	/* color: var(--clr-heliotrope); */
+	color: var(--clr-dark-aqua);
+	margin-left: 10px;
+
+	font-family: 'Frijole', cursive;
+	font-size: xx-large;
+}

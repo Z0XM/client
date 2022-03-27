@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@100&family=Amatic+SC&family=Baloo+Bhaijaan+2&family=Bangers&family=Faster+One&family=Fredoka:wght@300&family=Frijole&family=Major+Mono+Display&display=swap');
+
+html,
+body {
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+		Helvetica Neue, sans-serif;
+
+	--clr-russian-violet: #10002bff;
+	--clr-white: #ffffffff;
+	--clr-russian-violet-2: #240046ff;
+	--clr-purple: #5a189aff;
+	--clr-heliotrope: #c77dffff;
+	--clr-pink: #de1788ff;
+	--clr-blue: #0072bbff;
+	--clr-not-white: #e6e6e6ff;
+	--clr-dark-aqua: rgb(70, 209, 163);
+
+	/* --p-purple: #5c236c;
+	--p-black: #20201dff;
+	--p-orange: #f06543ff;
+	--s-purple-light: #a48de2ff;
+	--s-purple-dark: #772d8bff;
+	--s-white: #e6e6e6ff;
+	--s-pink: #de1788ff;
+	--s-purple-darker: #42194d;
+	--t-blue: #0072bbff; */
+
+	background-color: var(--clr-russian-violet-2);
+	scroll-behavior: smooth;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+	background: var(--clr-russian-violet);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--clr-purple);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--clr-purple);
+}

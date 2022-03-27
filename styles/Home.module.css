@@ -1,0 +1,140 @@
+.container {
+	position: relative;
+	width: 100vw;
+	height: 100vh;
+	display: inline-flex;
+
+	background-color: var(--clr-russian-violet-2);
+}
+
+.container_left {
+	width: 50%;
+	height: 100%;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.container_right {
+	left: 50%;
+	width: 50%;
+	height: 100%;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: left;
+	align-items: center;
+}
+
+.gameTitle {
+	position: relative;
+
+	width: 45%;
+	height: 10%;
+
+	font-family: 'Alegreya Sans SC', sans-serif;
+	font-style: italic;
+	font-weight: 900;
+	font-size: 4em;
+	text-align: center;
+
+	color: var(--clr-heliotrope);
+
+	border: 1px solid var(--clr-pink);
+	margin: 10px;
+
+	box-shadow: 0px 6px 0px -2px var(--clr-pink);
+}
+
+.gameTitle span:nth-of-type(2) {
+	transition: color 1s;
+}
+
+.gameTitle span:nth-of-type(2)::before {
+	position: absolute;
+	content: '0XM';
+
+	color: transparent;
+
+	transition: color 1s;
+}
+
+.gameTitle:active span:nth-of-type(2) {
+	color: transparent;
+}
+.gameTitle:active span:nth-of-type(2)::before {
+	color: var(--clr-heliotrope);
+}
+
+.area_left {
+	width: 45%;
+	height: 40%;
+
+	border: 5px solid var(--clr-heliotrope);
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	transition: background 1s;
+}
+
+.area_left:hover {
+	background-color: var(--clr-russian-violet);
+}
+
+.area_left input {
+	width: 80%;
+	height: 20%;
+
+	font-family: 'Amatic SC';
+	font-weight: 900;
+	font-size: 2.5em;
+	margin-top: 10px;
+	margin-bottom: 10px;
+
+	text-align: center;
+
+	color: #000000;
+
+	border: 2px solid #000000;
+	border-radius: 4px;
+
+	background: var(--clr-pink);
+}
+.area_left input::placeholder {
+	color: rgba(255, 255, 255, 0.7);
+}
+
+.area_left .create,
+.area_left .play {
+	font-family: 'Bangers';
+	font-size: 2.5em;
+	margin-top: 10px;
+	margin-bottom: 10px;
+
+	background-color: transparent;
+	border: none;
+
+	color: var(--clr-not-white);
+}
+
+.area_left .create:hover,
+.area_left .play:hover {
+	color: var(--clr-dark-aqua);
+}
+
+.area_left .create:active,
+.area_left .play:active {
+	transform: scale(0.9);
+}
+
+.error {
+	font-family: 'Baloo Bhaijaan 2';
+	font-size: x-large;
+
+	color: var(--clr-pink);
+}

@@ -1,0 +1,158 @@
+.container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: transparent;
+
+	display: inline-flex;
+}
+
+.players {
+	width: 20%;
+	height: 100%;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: left;
+
+	margin-left: 10%;
+}
+
+.player {
+	color: var(--clr-not-white);
+	font-family: 'Fredoka';
+	font-size: 1.5em;
+	font-weight: bolder;
+}
+
+.game {
+	width: 60%;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.currentLetters {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5px;
+
+	color: var(--clr-not-white);
+
+	font-family: 'Alegreya Sans SC';
+	font-weight: bolder;
+	font-size: 2em;
+}
+
+.game input {
+	height: 10%;
+	width: 70%;
+	margin-left: auto;
+	margin-right: auto;
+
+	color: var(--clr-heliotrope);
+	background: transparent;
+	border: none;
+
+	text-align: center;
+
+	font-family: 'Baloo Bhaijaan 2';
+	font-size: 2em;
+	font-weight: lighter;
+
+	resize: none;
+	overflow: hidden;
+}
+
+.game input:focus {
+	outline: none;
+}
+
+.game input:invalid {
+	background: red;
+}
+
+.game input.shake {
+	animation: shake 300ms linear;
+}
+
+@keyframes shake {
+	0% {
+		transform: translateX(0);
+	}
+	20% {
+		transform: translateX(10px);
+	}
+
+	40% {
+		transform: translateX(-10px);
+	}
+	60% {
+		transform: translateX(5px);
+	}
+	80% {
+		transform: translateX(-5px);
+	}
+	100% {
+		transform: translateX(0);
+	}
+}
+
+.clock {
+	--radius: 30px;
+	--hand-width: 3px;
+	--center-radius: 2px;
+
+	position: relative;
+	width: calc(var(--radius) * 2);
+	height: calc(var(--radius) * 2);
+
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 100px;
+
+	border-radius: 50%;
+	border: 2px solid black;
+}
+
+.clockCenter {
+	position: absolute;
+
+	width: calc(var(--center-radius) * 2);
+	height: calc(var(--center-radius) * 2);
+
+	left: 50%;
+	top: 50%;
+
+	transform: translate(-50%, -50%);
+
+	border-radius: 50%;
+
+	background: black;
+
+	color: rgb(201, 3, 3);
+}
+
+.clockHand {
+	position: relative;
+
+	--hand-gap: 5px;
+	--height: calc(var(--radius) - var(--hand-gap) * 2);
+
+	width: var(--hand-width);
+	height: var(--height);
+
+	left: calc(var(--radius) - 4px);
+	top: var(--hand-gap);
+
+	border-radius: 500px;
+
+	transform-origin: calc(var(--hand-width) * 0.5) calc(var(--height) + var(--hand-gap) - 2px);
+	transform: rotateZ(0deg);
+
+	transition: transform 1s ease-in-out;
+
+	background: black;
+}

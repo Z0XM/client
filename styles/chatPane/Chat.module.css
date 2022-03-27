@@ -1,0 +1,141 @@
+.messages {
+	width: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+.messages.open {
+	animation: messagesExtend 250ms forwards;
+}
+.messages.close {
+	animation: messagesCollapse 250ms forwards;
+}
+@keyframes messagesCollapse {
+	0% {
+		height: 85.5%;
+	}
+	100% {
+		height: 65%;
+	}
+}
+@keyframes messagesExtend {
+	0% {
+		height: 65%;
+	}
+	100% {
+		height: 85.5%;
+	}
+}
+.other,
+.self,
+.system {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	color: var(--clr-not-white);
+	font-family: 'Fredoka';
+	font-weight: bold;
+}
+.self {
+	justify-content: right;
+	--clr: var(--clr-blue);
+}
+.other {
+	justify-content: left;
+	--clr: var(--clr-pink);
+}
+
+.msgArea {
+	min-width: 30%;
+	max-width: 60%;
+	width: auto;
+	display: flex;
+	flex-direction: column;
+	margin: 2% 5%;
+}
+.system .msgArea {
+	width: 100%;
+	margin: auto;
+}
+
+.other .sender {
+	color: var(--clr);
+	font-weight: bolder;
+	margin-left: 15px;
+}
+.self .sender {
+	color: var(--clr);
+	font-weight: bolder;
+	text-align: right;
+	margin-right: 15px;
+}
+
+.msg {
+	overflow: hidden;
+	overflow-wrap: break-word;
+	padding: 3%;
+	border-radius: 10px;
+	border: 0;
+	border-style: solid;
+	font-size: 1.2em;
+	font-weight: 350;
+}
+
+.system .msg {
+	font-size: 1em;
+	margin: auto;
+}
+
+.other .msg {
+	border-left-color: var(--clr);
+	border-left-width: 3px;
+	text-align: left;
+	background-image: linear-gradient(to right, var(--clr), transparent);
+	padding-left: 10%;
+}
+.self .msg {
+	border-right-color: var(--clr);
+	border-right-width: 3px;
+	text-align: right;
+	background-image: linear-gradient(to left, var(--clr), transparent);
+	padding-right: 10%;
+}
+
+.input_container {
+	width: 100%;
+	height: 10%;
+}
+
+.input_container textarea {
+	position: relative;
+	width: 100%;
+	height: 95%;
+	top: 5%;
+
+	font-family: 'Fredoka';
+	font-size: x-large;
+	font-weight: bold;
+
+	background-color: #9847ee;
+	text-align: center;
+	border-bottom-left-radius: 10px;
+	padding: 10px;
+	color: black;
+	border: none;
+	overflow: hidden;
+	resize: none;
+}
+
+.input_container textarea:focus {
+	animation: inputColor 250ms forwards;
+	outline: none;
+}
+
+.input_container textarea::placeholder {
+	color: black;
+}
+
+@keyframes inputColor {
+	100% {
+		background-color: #a159ee;
+	}
+}

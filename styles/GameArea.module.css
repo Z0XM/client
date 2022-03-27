@@ -1,0 +1,38 @@
+.area {
+	position: absolute;
+
+	width: 95%;
+	height: 100%;
+	padding-left: 2.5%;
+	padding-right: 2.5%;
+
+	display: block;
+}
+
+.backButton {
+	position: absolute;
+
+	top: -5.4%;
+	left: 0;
+
+	height: 5%;
+	width: 7%;
+
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+
+	color: black;
+	background-color: var(--clr-pink);
+
+	border: none;
+
+	text-align: center;
+
+	font-family: 'Baloo Bhaijaan 2';
+	font-weight: bolder;
+	font-size: 1.2em;
+}
+
+.backButton.notHost {
+	visibility: hidden;
+}

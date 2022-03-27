@@ -1,0 +1,135 @@
+.players {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 4.5%;
+	margin: 0;
+	padding: 0;
+	border-top-left-radius: 10px;
+	background-color: #9847ee;
+}
+
+.players_title {
+	margin: 0;
+	border: none;
+	width: 100%;
+	height: 4.5%;
+	border-top-left-radius: 10px;
+	background-color: transparent;
+	font-family: 'Fredoka';
+	font-weight: 900;
+	font-size: larger;
+	color: black;
+
+	--up-arrow: '\25B2';
+	--down-arrow: '\25BC';
+}
+.players_title.close::before,
+.players_title.close::after {
+	content: var(--down-arrow);
+}
+
+.players_title.open::before,
+.players_title.open::after {
+	content: var(--up-arrow);
+}
+
+.players_title:hover {
+	cursor: pointer;
+}
+
+.players.open {
+	animation: playerListOpen 250ms forwards;
+}
+.players.close {
+	animation: playerListClose 250ms forwards;
+}
+
+@keyframes playerListOpen {
+	0% {
+		height: 4.5%;
+	}
+	100% {
+		height: 25%;
+	}
+}
+
+@keyframes playerListClose {
+	0% {
+		height: 25%;
+	}
+	100% {
+		height: 4.5%;
+	}
+}
+
+.refresh {
+	position: absolute;
+	top: -3px;
+	right: 10px;
+	height: 30px;
+	padding: 0;
+
+	background-color: transparent;
+	border: none;
+}
+.refresh::before {
+	font-size: x-large;
+	font-weight: 900;
+	content: '\21bb';
+}
+
+.refresh:focus {
+	animation: rotateRefresh 500ms;
+}
+@keyframes rotateRefresh {
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.player_list {
+	font-family: 'Baloo Bhaijaan 2';
+	font-weight: 450;
+	font-size: larger;
+	text-align: center;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(auto-fill, auto);
+}
+.player_list div {
+	margin: 5px;
+	color: white;
+}
+
+.player_list div:first-of-type:before {
+	content: '\1F451';
+}
+
+.player_list.close,
+.player_list.close div {
+	animation: listFadeOut 250ms forwards;
+}
+
+.player_list.open,
+.player_list.open div {
+	animation: listFadeIn 250ms forwards;
+}
+
+@keyframes listFadeOut {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+@keyframes listFadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
