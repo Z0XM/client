@@ -63,31 +63,6 @@
 	}
 }
 
-.refresh {
-	position: absolute;
-	top: -3px;
-	right: 10px;
-	height: 30px;
-	padding: 0;
-
-	background-color: transparent;
-	border: none;
-}
-.refresh::before {
-	font-size: x-large;
-	font-weight: 900;
-	content: '\21bb';
-}
-
-.refresh:focus {
-	animation: rotateRefresh 500ms;
-}
-@keyframes rotateRefresh {
-	100% {
-		transform: rotate(360deg);
-	}
-}
-
 .player_list {
 	font-family: 'Baloo Bhaijaan 2';
 	font-weight: 450;

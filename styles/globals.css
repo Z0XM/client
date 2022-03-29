@@ -15,6 +15,7 @@ body {
 	--clr-blue: #0072bbff;
 	--clr-not-white: #e6e6e6ff;
 	--clr-dark-aqua: rgb(70, 209, 163);
+	--clr-dark-blue: rgba(81, 1, 201, 0.857);
 
 	/* --p-purple: #5c236c;
 	--p-black: #20201dff;
@@ -28,6 +29,8 @@ body {
 
 	background-color: var(--clr-russian-violet-2);
 	scroll-behavior: smooth;
+
+	overflow: hidden;
 }
 
 a {
@@ -44,14 +47,16 @@ button:hover {
 }
 
 ::-webkit-scrollbar {
-	width: 10px;
-	background: var(--clr-russian-violet);
+	width: 5px;
+	background-color: var(--clr-russian-violet);
 }
 
 ::-webkit-scrollbar-thumb {
-	background: var(--clr-purple);
+	background-color: var(--clr-dark-blue);
 }
 
-::-webkit-scrollbar-thumb:hover {
-	background: var(--clr-purple);
+@media only screen and (max-width: 800px) {
+	body {
+		overflow: scroll;
+	}
 }

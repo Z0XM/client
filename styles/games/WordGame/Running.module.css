@@ -46,7 +46,8 @@
 	font-size: 2em;
 }
 
-.game input {
+.game input,
+.wordDisplay {
 	height: 10%;
 	width: 70%;
 	margin-left: auto;
@@ -68,10 +69,6 @@
 
 .game input:focus {
 	outline: none;
-}
-
-.game input:invalid {
-	background: red;
 }
 
 .game input.shake {
