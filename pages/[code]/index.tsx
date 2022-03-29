@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState, useContext } from 'react'
+import { useEffect, useState } from 'react'
 import { useSockets } from '../../context/Socket.context'
 
 import ChatPane from '../../components/chatPane/ChatPane'
