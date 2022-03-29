@@ -14,7 +14,7 @@ const MainPage: NextPage = () => {
 
 	const queryRoomCode = router.query.code as string
 
-	const [playerName, setName] = useState('NooB')
+	const [playerName, setName] = useState('')
 	const [errorLog, setErrorLog] = useState('')
 
 	const createRoom = () => {

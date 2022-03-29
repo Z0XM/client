@@ -43,7 +43,6 @@ export default function PlayerList({ playerListVisible, togglePlayerVisiblity }:
 				onClick={togglePlayerVisiblity}>
 				{allNames.playerNames.length + 1} Players
 			</button>
-			<button className={styles.refresh} onClick={refreshPlayerNames}></button>
 			<div className={styles.player_list + ' ' + (playerListVisible ? styles.open : styles.close)}>
 				<div>{allNames.hostName}</div>
 				{allNames.playerNames.map((name, index) => {

@@ -17,7 +17,8 @@ const EVENTS = {
 					menuStateSignal: 'wg-menu-state-s',
 					runningStateSignal: 'wg-running-state-s',
 					submitWordSignal: 'wg-submit-word-s',
-					isWordReal: 'wg-is-word-real'
+					isWordReal: 'wg-is-word-real',
+					currentWordSignal: 'wg-current-word-s'
 				}
 			}
 		},
@@ -32,7 +33,8 @@ const EVENTS = {
 				WordGame: {
 					menuStateAction: 'wg-menu-state-a',
 					runningStateAction: 'wg-running-state-a',
-					submitWordAction: 'wg-submit-word-a'
+					submitWordAction: 'wg-submit-word-a',
+					currentWordAction: 'wg-current-word-a'
 				}
 			}
 		}

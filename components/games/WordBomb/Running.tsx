@@ -75,6 +75,7 @@ export default function Running({ setMenu, settings }: ComponentArgs) {
 		if (submitEvents.turnChange) {
 			setTurn(submitData.newTurn!)
 			setTimeLeft(settings.timeLimit)
+			setWord('')
 		}
 	}
 
@@ -157,6 +158,8 @@ export default function Running({ setMenu, settings }: ComponentArgs) {
 	useEffect(() => {
 		socket.on(EVENTS.CLIENT.fromServer.Games.WordGame.submitWordAction, handleSubmitWordEvents)
 
+		socket.on(EVENTS.CLIENT.fromServer.Games.WordGame.currentWordAction, setWord)
+
 		const interval = setInterval(() => {
 			setTimeLeft((_) => _ - 1)
 		}, 1000)
@@ -218,7 +221,7 @@ export default function Running({ setMenu, settings }: ComponentArgs) {
 					<div style={{ transform: `rotate(${clockHandAngle}deg)` }} className={styles.clockHand}></div>
 				</div>
 				<div className={styles.currentLetters}>{letters}</div>
-				{idArray[turn] === userId && (
+				{idArray[turn] === userId ? (
 					<input
 						ref={wordInputRef}
 						className={shake ? styles.shake : undefined}
@@ -235,9 +238,12 @@ export default function Running({ setMenu, settings }: ComponentArgs) {
 							}
 							wordInputRef.current!.value = newWord
 							setWord(newWord)
+							socket.emit(EVENTS.CLIENT.toServer.Games.WordGame.currentWordSignal, newWord)
 						}}
 						autoFocus
 						placeholder='Type Here'></input>
+				) : (
+					<div className={styles.wordDisplay}>{word}</div>
 				)}
 			</div>
 		</div>

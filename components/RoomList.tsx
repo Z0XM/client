@@ -22,6 +22,7 @@ export default function RoomList({ joinRoom }: ComponentArgs) {
 	>([])
 
 	useEffect(() => {
+		socket.emit(EVENTS.CLIENT.toServer.getRoomList, setRoomList)
 		setInterval(() => {
 			socket.emit(EVENTS.CLIENT.toServer.getRoomList, setRoomList)
 		}, 5000)
