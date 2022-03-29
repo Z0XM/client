@@ -6,7 +6,7 @@ export default function Navbar() {
 	const router = useRouter()
 	const { code } = useRoomData()!
 
-	const game_link = `http://localhost:3000/?code=${code}`
+	const gameLink = `${window.location.host}/?code=${code}`
 
 	return (
 		<div className={styles.navbar}>
@@ -16,7 +16,7 @@ export default function Navbar() {
 			<div className={styles.link}>
 				<button
 					onClick={(e) => {
-						navigator.clipboard.writeText(game_link)
+						navigator.clipboard.writeText(gameLink)
 					}}>
 					&#128203; Copy Link
 				</button>
