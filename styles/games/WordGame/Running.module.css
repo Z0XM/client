@@ -8,7 +8,7 @@
 }
 
 .players {
-	width: 20%;
+	width: 30%;
 	height: 100%;
 
 	display: flex;
@@ -27,7 +27,7 @@
 }
 
 .game {
-	width: 60%;
+	width: 50%;
 
 	display: flex;
 	flex-direction: column;
@@ -98,7 +98,7 @@
 }
 
 .clock {
-	--radius: 30px;
+	--radius: 40px;
 	--hand-width: 3px;
 	--center-radius: 2px;
 

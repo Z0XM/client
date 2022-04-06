@@ -1,10 +1,10 @@
-.wordBomb {
+.WordBomb {
 	filter: invert(97%) sepia(4%) saturate(2261%) hue-rotate(196deg) brightness(115%) contrast(80%);
 	transform: scale(1.2);
 	transform-origin: center;
 }
 
-.wordBomb:active {
+.WordBomb:active {
 	/* filter: invert(22%) sepia(100%) saturate(2374%) hue-rotate(309deg) brightness(85%) contrast(105%); */
 	animation: shake 250ms linear;
 }
@@ -31,6 +31,6 @@
 	}
 }
 
-.comingSoon {
+.ComingSoon {
 	filter: invert(64%) sepia(71%) saturate(3172%) hue-rotate(225deg) brightness(100%) contrast(102%);
 }

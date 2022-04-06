@@ -1,9 +1,16 @@
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import EVENTS from '../config/events'
-import { useSockets } from '../context/Socket.context'
 
 import styles from '../styles/RoomList.module.css'
+import { useSockets } from '../utils/Socket.util'
+import { gameTitles } from './games/games'
+
+interface Room {
+	code: string
+	host: string
+	playerCount: number
+	spectatorCount: number
+	status: number
+}
 
 interface ComponentArgs {
 	joinRoom: (room_code: string) => void
@@ -12,20 +19,17 @@ interface ComponentArgs {
 export default function RoomList({ joinRoom }: ComponentArgs) {
 	const socket = useSockets()
 
-	const [roomList, setRoomList] = useState<
-		{
-			code: string
-			host: string
-			playerCount: number
-			status: string
-		}[]
-	>([])
+	const [roomList, setRoomList] = useState<Room[]>([])
 
 	useEffect(() => {
-		socket.emit(EVENTS.CLIENT.toServer.getRoomList, setRoomList)
-		setInterval(() => {
-			socket.emit(EVENTS.CLIENT.toServer.getRoomList, setRoomList)
+		socket.emitEvent('getRoomList', setRoomList)
+		const interval = setInterval(() => {
+			socket.emitEvent('getRoomList', setRoomList)
 		}, 5000)
+
+		return () => {
+			clearInterval(interval)
+		}
 	}, [])
 
 	return (
@@ -42,8 +46,11 @@ export default function RoomList({ joinRoom }: ComponentArgs) {
 						<p>
 							<span className={styles.host}>{room.host} </span>
 							<br />
-							<span className={styles.gameName}> {room.status} </span>
-							<span className={styles.playerCount}> {room.playerCount + 1} </span>
+							<span className={styles.gameName}>
+								{' '}
+								{room.status == -1 ? 'In Menu' : gameTitles[room.status]}{' '}
+							</span>
+							<span className={styles.playerCount}> {room.playerCount + room.spectatorCount} </span>
 						</p>
 					</button>
 				)

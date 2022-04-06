@@ -14,7 +14,7 @@ export default function Navbar() {
 			<div className={styles.link}>
 				<button
 					onClick={(e) => {
-						navigator.clipboard.writeText(`${window.location.host}/?code=${code}`)
+						navigator.clipboard.writeText(`https://${window.location.host}/?code=${code}`)
 					}}>
 					&#128203; Copy Link
 				</button>

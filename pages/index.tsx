@@ -1,10 +1,9 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { useSockets } from '../context/Socket.context'
 import RoomList from '../components/RoomList'
-import EVENTS from '../config/events'
+import { useSockets } from '../utils/Socket.util'
 
 import styles from '../styles/Home.module.css'
 
@@ -14,28 +13,41 @@ const MainPage: NextPage = () => {
 
 	const queryRoomCode = router.query.code as string
 
-	const [playerName, setName] = useState('')
+	const [userName, setName] = useState('')
 	const [errorLog, setErrorLog] = useState('')
 
-	const createRoom = () => {
-		socket.emit(EVENTS.CLIENT.toServer.createRoom, playerName, (isError: boolean, response: string) => {
-			isError
-				? setErrorLog(response)
-				: router.replace(`/${response}/?isHost=true&playerName=${playerName}`, `/${response}`)
-		})
+	function handleResponse(response: {
+		isError: boolean
+		code?: string
+		errorMsg?: string
+		isHost?: boolean
+		status?: number
+		shouldWait?: boolean
+	}) {
+		window.localStorage.setItem('userName', userName.toUpperCase())
+		response.isError
+			? setErrorLog(response.errorMsg!)
+			: router.replace(
+					`/${response.code!}/?` +
+						`isHost=${response.isHost}&` +
+						`userName=${userName}&` +
+						`status=${response.status!}&` +
+						`shouldWait=${response.shouldWait}`,
+					`/${response.code!}`
+			  )
 	}
 
-	const joinRoom = (room_code: string) => {
-		socket.emit(
-			EVENTS.CLIENT.toServer.joinRoom,
-			{ roomCode: room_code, playerName },
-			(isError: boolean, response: string) => {
-				isError
-					? setErrorLog(response)
-					: router.replace(`/${room_code}/?isHost=false&playerName=${playerName}`, `/${room_code}`)
-			}
-		)
+	const createRoom = () => {
+		socket.emitEvent('createRoom', userName.toUpperCase(), handleResponse)
 	}
+
+	const joinRoom = (roomCode: string) => {
+		socket.emitEvent('joinRoom', roomCode, userName.toUpperCase(), handleResponse)
+	}
+
+	useEffect(() => {
+		setName(window.localStorage.getItem('userName') ?? '')
+	}, [])
 
 	return (
 		<div className={styles.container}>
@@ -50,7 +62,7 @@ const MainPage: NextPage = () => {
 						placeholder='Enter Your Name'
 						autoComplete='off'
 						onChange={(e) => setName(e.target.value)}
-						value={playerName}
+						value={userName}
 					/>
 					<button
 						className={styles.create}

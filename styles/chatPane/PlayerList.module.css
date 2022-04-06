@@ -9,20 +9,41 @@
 	background-color: #9847ee;
 }
 
+.topBar{
+    position: relative;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+
+    font-family: 'Fredoka';
+    font-weight: 900;
+    font-size: larger;
+    color: black;
+}
+
+.spectators{
+    position: absolute;
+
+    left:5%;
+}
+
 .players_title {
+    position: absolute; 
+
 	margin: 0;
 	border: none;
-	width: 100%;
+	width: fit-content;
 	height: 4.5%;
 	border-top-left-radius: 10px;
 	background-color: transparent;
-	font-family: 'Fredoka';
-	font-weight: 900;
-	font-size: larger;
-	color: black;
+	
+    font: inherit;
 
 	--up-arrow: '\25B2';
 	--down-arrow: '\25BC';
+
+    z-index: 1;
 }
 .players_title.close::before,
 .players_title.close::after {
@@ -64,6 +85,8 @@
 }
 
 .player_list {
+    padding-top: 20px;
+
 	font-family: 'Baloo Bhaijaan 2';
 	font-weight: 450;
 	font-size: larger;
@@ -72,22 +95,32 @@
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: repeat(auto-fill, auto);
 }
-.player_list div {
+.playerName,
+.spectatorName,
+.hostName {
 	margin: 5px;
 	color: white;
 }
 
-.player_list div:first-of-type:before {
+.hostName:before {
 	content: '\1F451';
+}
+.spectatorName:after{
+    color:aqua;
+    content: '\1F441';
 }
 
 .player_list.close,
-.player_list.close div {
+.player_list.close .playerName,
+.player_list.close .spectatorName,
+.player_list.close .hostName {
 	animation: listFadeOut 250ms forwards;
 }
 
 .player_list.open,
-.player_list.open div {
+.player_list.close .playerName,
+.player_list.close .spectatorName,
+.player_list.close .hostName{
 	animation: listFadeIn 250ms forwards;
 }
 
@@ -108,3 +141,4 @@
 		opacity: 1;
 	}
 }
+

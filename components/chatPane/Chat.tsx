@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import EVENTS from '../../config/events'
 import { useRoomData } from '../../context/RoomData.context'
-import { useSockets } from '../../context/Socket.context'
 
 import styles from '../../styles/chatPane/Chat.module.css'
+import { useSockets } from '../../utils/Socket.util'
 
 interface ComponentArgs {
 	playerListVisible: boolean
@@ -11,7 +10,7 @@ interface ComponentArgs {
 
 export default function Chat({ playerListVisible }: ComponentArgs) {
 	const socket = useSockets()
-	const { playerName } = useRoomData()!
+	const { userName } = useRoomData()!
 
 	const messageAreaRef = useRef<HTMLDivElement>(null)
 	const textAreaRef = useRef<HTMLTextAreaElement>(null)
@@ -19,27 +18,27 @@ export default function Chat({ playerListVisible }: ComponentArgs) {
 	const [chats, setChats] = useState<{ sender: string; msg: string }[]>([])
 
 	useEffect(() => {
-		socket.on(EVENTS.CLIENT.fromServer.chatMessageReceive, (chat) => {
-			setChats((oldChats) => [...oldChats, chat])
+		const listener = socket.onEvent('chatMsgReceive', (sender, msg) => {
+			setChats((oldChats) => [...oldChats, { sender, msg }])
 		})
 
 		if (messageAreaRef.current) {
-			messageAreaRef.current.addEventListener('DOMNodeInserted', (event) => {
+			messageAreaRef.current.addEventListener('DOMNodeInserted', () => {
 				messageAreaRef.current!.scroll({ top: messageAreaRef.current!.scrollHeight, behavior: 'smooth' })
 			})
 
-			messageAreaRef.current.addEventListener('click', (e) => {
+			messageAreaRef.current.addEventListener('click', () => {
 				textAreaRef.current!.focus()
 			})
 		}
 
 		return () => {
-			socket.removeAllListeners(EVENTS.CLIENT.fromServer.chatMessageReceive)
+			listener.off()
 		}
 	}, [])
 
 	function sendText(msg: string) {
-		socket.emit(EVENTS.CLIENT.toServer.chatMessageSend, { sender: playerName, msg })
+		socket.emitEvent('chatMsgSend', userName, msg)
 		setChats((oldChats) => [...oldChats, { sender: 'self', msg }])
 	}
 
@@ -61,7 +60,7 @@ export default function Chat({ playerListVisible }: ComponentArgs) {
 							key={index}>
 							<div className={styles.msgArea}>
 								<div className={styles.sender}>
-									{chat.sender === 'system' ? '' : chat.sender === 'self' ? playerName : chat.sender}
+									{chat.sender === 'system' ? '' : chat.sender === 'self' ? userName : chat.sender}
 								</div>
 								<div className={styles.msg}>{chat.msg}</div>
 							</div>

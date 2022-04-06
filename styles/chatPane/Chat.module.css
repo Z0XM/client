@@ -139,3 +139,10 @@
 		background-color: #a159ee;
 	}
 }
+
+
+@media only screen and (max-width: 950px) {
+    .input_container textarea::placeholder {
+        font-size: medium;
+    }
+}

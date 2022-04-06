@@ -1,164 +1,175 @@
-import { HTMLAttributes, useEffect, useRef, useState } from 'react'
+import { HTMLAttributes, useEffect, useReducer, useRef, useState } from 'react'
 
 import { useGameInfo } from '../../../context/GameInfo.context'
-import { useUserId } from '../../../context/UserId.context'
-import { useRoomData } from '../../../context/RoomData.context'
-import { useSockets } from '../../../context/Socket.context'
-import EVENTS from '../../../config/events'
 
 import styles from '../../../styles/games/WordGame/Running.module.css'
+import { useSockets } from '../../../utils/Socket.util'
+import { useUserId } from '../../../utils/UserId.util'
 
-import { Settings } from './types'
+import { Settings, RunningVariables, GameAction, GameEventData } from './types'
 
-interface SubmitEvents {
-	lifeChange: boolean
-	lettersChange: boolean
-	turnChange: boolean
-	playerOut: boolean
-	correctWord: boolean
-}
-
-interface SubmitData {
-	newLetters?: string
-	newTurn?: number
-	word?: string
-	newLifeValue?: number
-}
+import { GetServerSideProps } from 'next'
+import { useUsers } from '../../../context/Users.context'
 
 interface ComponentArgs {
 	setMenu: (winner: string | null) => void
 	settings: Settings
+	letterList: string[]
 }
 
-export default function Running({ setMenu, settings }: ComponentArgs) {
+function handleGameEvents(state: RunningVariables, action: GameAction): RunningVariables {
+	const nextTurn = () => {
+		const size = state.playersInGame.length
+		let newTurn = (state.turn + 1) % size
+		while (state.playersInGame[newTurn].lives == 0) newTurn = (newTurn + 1) % size
+		return newTurn
+	}
+
+	switch (action.event) {
+		case 'correctWord':
+			action.function!.resetTime!()
+			return {
+				...state,
+				letterIndex: action.data!.newLetterIndex!,
+				turn: nextTurn(),
+				lettersPassedTimes: 0,
+				usedWords: [...state.usedWords, action.data!.word!]
+			}
+
+		case 'timeOver': {
+			action.function!.resetTime!()
+			const passedEnough = state.lettersPassedTimes + 1 == action.settings!.passLettersTimes
+			return {
+				...state,
+				turn: nextTurn(),
+				playersInGame: state.playersInGame.map((player, index) =>
+					index == state.turn ? { ...player, lives: player.lives - 1 } : player
+				),
+				lettersPassedTimes: passedEnough ? 0 : state.lettersPassedTimes + 1,
+				letterIndex: passedEnough ? action.data!.newLetterIndex! : state.letterIndex
+			}
+		}
+
+		case 'playerLeft': {
+			if (state.playersInGame[state.turn].userId == action.data!.playerWhoLeftId!) {
+				const passedEnough = state.lettersPassedTimes == action.settings!.passLettersTimes
+				action.function!.resetTime!()
+				return {
+					...state,
+					turn: nextTurn(),
+					playersInGame: state.playersInGame.map((player, index) =>
+						index == state.turn ? { ...player, lives: 0 } : player
+					),
+					lettersPassedTimes: passedEnough ? 0 : state.lettersPassedTimes,
+					letterIndex: passedEnough ? action.data!.newLetterIndex! : state.letterIndex
+				}
+			} else {
+				return {
+					...state,
+					playersInGame: state.playersInGame.map((player, index) =>
+						player.userId == action.data!.playerWhoLeftId! ? { ...player, lives: 0 } : player
+					)
+				}
+			}
+		}
+	}
+
+	return state
+}
+
+function generateLetters(letterlist: string[], currentLetters: string) {
+	const lettersToChooseFrom = letterlist.filter((value, index) => value != currentLetters)
+	return lettersToChooseFrom[Math.floor(Math.random() * lettersToChooseFrom.length)]
+}
+
+export default function Running({ setMenu, settings, letterList }: ComponentArgs) {
 	const socket = useSockets()
 	const userId = useUserId()
-	const { idArray, playersMap } = useGameInfo()!
+	const { players } = useUsers()!
+	const { shiftToAndEmit } = useUsers()!
 
-	const letterList = ['ER', 'OR', 'UT', 'AN', 'OP', 'ER', 'DR', 'KN']
-
+	const [word, setWord] = useState('')
+	const [clockHandAngle, setClockHandAngle] = useState(0)
+	const [timeLeft, setTimeLeft] = useState(settings.timeLimit)
 	const [shake, setShake] = useState(false)
 
-	const [timeLeft, setTimeLeft] = useState(settings.timeLimit)
-	const [clockHandAngle, setClockHandAngle] = useState(0)
+	function initVariables(): RunningVariables {
+		return {
+			letterIndex: 0,
+			lettersPassedTimes: 0,
+			usedWords: [],
+			turn: 0,
+			playersInGame: players.map((user) => {
+				return { ...user, lives: settings.lives }
+			})
+		}
+	}
 
-	const [letters, setLetters] = useState(letterList[0])
-	const [word, setWord] = useState('')
-	const [usedWords, setUsedWords] = useState<string[]>([])
-	const [turn, setTurn] = useState(0)
-	const [playersLeft, setPlayersLeft] = useState([...idArray])
-	const [lives, setLives] = useState<{ [key: string]: number }>(() =>
-		idArray.reduce((oldLives, id) => {
-			return { ...oldLives, [id]: settings.lives }
-		}, {})
+	const [{ letterIndex, usedWords, turn, playersInGame }, dispatchGameEvent] = useReducer(
+		handleGameEvents,
+		initVariables()
 	)
 
 	const wordInputRef = useRef<HTMLInputElement>(null)
 
-	function implementShake() {
-		setShake(true)
-		setTimeout(() => setShake(false), 500)
+	function resetTime() {
+		setTimeLeft(settings.timeLimit)
 	}
 
-	function handleSubmitWordEvents(userId: string, submitEvents: SubmitEvents, submitData: SubmitData) {
-		submitEvents.lifeChange &&
-			setLives((oldLives) => {
-				return { ...oldLives, [userId]: submitData.newLifeValue! }
-			})
+	function isValidWord() {
+		return (
+			word.length >= settings.minWordLength &&
+			word.toUpperCase().indexOf(letterList[letterIndex]) != -1 &&
+			!usedWords.includes(word)
+		)
+	}
 
-		submitEvents.playerOut && setPlayersLeft((oldPlayersLeft) => oldPlayersLeft.filter((x) => x != userId))
-
-		submitEvents.lettersChange && setLetters(submitData.newLetters!)
-
-		submitEvents.correctWord && setUsedWords((oldArray) => [...oldArray, submitData.word!])
-
-		if (submitEvents.turnChange) {
-			setTurn(submitData.newTurn!)
-			setTimeLeft(settings.timeLimit)
-			setWord('')
-		}
+	function onCorrectWord(data: GameEventData) {
+		dispatchGameEvent({
+			event: 'correctWord',
+			data,
+			function: { resetTime },
+			settings
+		})
+		setWord('')
 	}
 
 	function submitWord() {
-		const submitEvents: SubmitEvents = {
-			lifeChange: false,
-			lettersChange: false,
-			turnChange: false,
-			playerOut: false,
-			correctWord: false
-		}
-		const submitData: SubmitData = {}
-
-		const updateTurn = () => {
-			let newTurn = turn
-			do {
-				newTurn = (newTurn + 1) % idArray.length
-			} while (lives[idArray[newTurn]] == 0)
-			return newTurn
+		const runIfNotValid = () => {
+			setShake(true)
+			setTimeout(() => setShake(false), 500)
 		}
 
-		function whenTrueSubmit() {
-			submitEvents.lettersChange = true
-			submitData.newLetters = letterList[Math.floor(Math.random() * letterList.length)]
-
-			submitEvents.turnChange = true
-			submitData.newTurn = updateTurn()
-
-			submitEvents.correctWord = true
-			submitData.word = word
+		const runIfFinalValid = () => {
+			const submitData = { word, newLetterIndex: (letterIndex + 1) % letterList.length }
+			onCorrectWord(submitData)
+			socket.emitEvent('Game-WordGame-submitWordSignal', submitData)
 		}
 
-		function whenFalseSubmit() {
-			submitData.newLifeValue = lives[idArray[turn]] - 1
-			submitEvents.lifeChange = true
-			submitEvents.turnChange = true
-			submitData.newTurn = updateTurn()
-			if (submitData.newLifeValue == 0) submitEvents.playerOut = true
-		}
-
-		function finalEmitAndUpdate() {
-			socket.emit(EVENTS.CLIENT.toServer.Games.WordGame.submitWordSignal, idArray[turn], submitEvents, submitData)
-			handleSubmitWordEvents(idArray[turn], submitEvents, submitData)
-		}
-
-		function isValidWord() {
-			return (
-				word.length >= settings.minWordLength &&
-				word.toUpperCase().indexOf(letters) != -1 &&
-				!usedWords.includes(word)
-			)
-		}
-
-		if (timeLeft > 0) {
-			if (isValidWord()) {
-				socket.emit(EVENTS.CLIENT.toServer.Games.WordGame.isWordReal, word, (result: boolean) => {
-					if (result) {
-						whenTrueSubmit()
-						finalEmitAndUpdate()
-					} else {
-						implementShake()
-					}
-				})
-			} else {
-				implementShake()
-			}
-		} else {
-			if (isValidWord()) {
-				socket.emit(EVENTS.CLIENT.toServer.Games.WordGame.isWordReal, word, (result: boolean) => {
-					result ? whenTrueSubmit() : whenFalseSubmit()
-					finalEmitAndUpdate()
-				})
-			} else {
-				whenFalseSubmit()
-				finalEmitAndUpdate()
-			}
-		}
+		isValidWord()
+			? socket.emitEvent('Game-WordGame-isWordReal', word, (isValid: boolean) =>
+					isValid ? runIfFinalValid() : runIfNotValid()
+			  )
+			: runIfNotValid()
 	}
 
 	useEffect(() => {
-		socket.on(EVENTS.CLIENT.fromServer.Games.WordGame.submitWordAction, handleSubmitWordEvents)
-
-		socket.on(EVENTS.CLIENT.fromServer.Games.WordGame.currentWordAction, setWord)
+		const listeners = [
+			socket.onEvent('Game-WordGame-currentWordAction', setWord),
+			socket.onEvent('Game-WordGame-submitWordAction', onCorrectWord),
+			socket.onEvent('playerLeft', (userId) => {
+				dispatchGameEvent({
+					event: 'playerLeft',
+					data: {
+						playerWhoLeftId: userId,
+						newLetterIndex: (letterIndex + 1) % letterList.length
+					},
+					function: { resetTime },
+					settings
+				})
+				setWord('')
+			})
+		]
 
 		const interval = setInterval(() => {
 			setTimeLeft((_) => _ - 1)
@@ -166,23 +177,35 @@ export default function Running({ setMenu, settings }: ComponentArgs) {
 
 		return () => {
 			clearInterval(interval)
-			socket.removeAllListeners(EVENTS.CLIENT.fromServer.Games.WordGame.submitWordAction)
+			listeners.forEach((listener) => listener.off())
 		}
 	}, [])
 
 	useEffect(() => {
-		if (playersLeft.length == 1) setMenu(playersMap[playersLeft[0]])
-	}, [playersLeft])
+		if (timeLeft == 0) {
+			dispatchGameEvent({
+				event: 'timeOver',
+				data: {
+					newLetterIndex: (letterIndex + 1) % letterList.length
+				},
+				function: { resetTime, shiftToAndEmit },
+				settings
+			})
+			setWord('')
+		}
 
-	useEffect(() => {
-		if (timeLeft <= 0 && userId === idArray[turn]) submitWord()
 		setClockHandAngle((_) => _ + 90)
 	}, [timeLeft])
+
+	useEffect(() => {
+		const playersLeft = playersInGame.filter((player) => player.lives > 0)
+		playersLeft.length == 1 && setMenu(playersLeft[0].userName)
+	}, [playersInGame])
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.players}>
-				{idArray.map((id, index) => {
+				{playersInGame.map((player, index) => {
 					return (
 						<p
 							className={styles.player}
@@ -190,13 +213,13 @@ export default function Running({ setMenu, settings }: ComponentArgs) {
 							style={
 								(index == turn
 									? { fontSize: '2em', color: 'limegreen' }
-									: !lives[id]
+									: !player.lives
 									? { color: 'gray' }
 									: null) as HTMLAttributes<HTMLParagraphElement>
 							}>
-							{playersMap[id]}
+							{player.userName}
 							<span> </span>
-							{[...Array(lives[id])].map((v, i) => {
+							{[...Array(player.lives)].map((v, i) => {
 								return (
 									<span style={{ color: 'red' }} key={i}>
 										&#10084;
@@ -207,7 +230,7 @@ export default function Running({ setMenu, settings }: ComponentArgs) {
 					)
 				})}
 			</div>
-			<div className={styles.game}>
+			<div className={styles.game} onClick={() => wordInputRef.current?.focus()}>
 				<div
 					style={
 						timeLeft >= 7
@@ -220,8 +243,8 @@ export default function Running({ setMenu, settings }: ComponentArgs) {
 					<div className={styles.clockCenter}></div>
 					<div style={{ transform: `rotate(${clockHandAngle}deg)` }} className={styles.clockHand}></div>
 				</div>
-				<div className={styles.currentLetters}>{letters}</div>
-				{idArray[turn] === userId ? (
+				<div className={styles.currentLetters}>{letterList[letterIndex]}</div>
+				{playersInGame[turn].userId === userId ? (
 					<input
 						ref={wordInputRef}
 						className={shake ? styles.shake : undefined}
@@ -238,9 +261,10 @@ export default function Running({ setMenu, settings }: ComponentArgs) {
 							}
 							wordInputRef.current!.value = newWord
 							setWord(newWord)
-							socket.emit(EVENTS.CLIENT.toServer.Games.WordGame.currentWordSignal, newWord)
+							socket.emitEvent('Game-WordGame-currentWordSignal', newWord)
 						}}
 						autoFocus
+						spellCheck='false'
 						placeholder='Type Here'></input>
 				) : (
 					<div className={styles.wordDisplay}>{word}</div>

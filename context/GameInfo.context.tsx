@@ -2,8 +2,6 @@ import { createContext, Dispatch, useContext } from 'react'
 
 interface GameInfo {
 	gameData: { index: number; [key: string]: any }
-	idArray: string[]
-	playersMap: { [key: string]: string }
 	setBackAction: Dispatch<any>
 	getDefaultBackAction: () => () => void
 }

@@ -12,10 +12,11 @@
 .backButton {
 	position: absolute;
 
-	top: -5.4%;
+	padding-bottom: 0;
 	left: 0;
-
-	height: 5%;
+	top: -35px;
+	bottom: 100.4%;
+	/* height: 5%; */
 	width: auto;
 
 	border-top-left-radius: 10px;
@@ -31,6 +32,8 @@
 	font-family: 'Baloo Bhaijaan 2';
 	font-weight: bolder;
 	font-size: 1.2em;
+
+	z-index: 1;
 }
 
 .backButton.notHost {

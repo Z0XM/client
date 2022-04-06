@@ -2,68 +2,81 @@ import { useEffect, useState } from 'react'
 
 import Running from './Running'
 import Menu from './Menu'
-import { useSockets } from '../../../context/Socket.context'
 import { useGameInfo } from '../../../context/GameInfo.context'
-import EVENTS from '../../../config/events'
 
 import { Settings } from './types'
+import { useSockets } from '../../../utils/Socket.util'
+import { getMinimumRequiredPlayers } from '../games'
+import { useUsers } from '../../../context/Users.context'
+import { useRoomData } from '../../../context/RoomData.context'
 
-enum GameState {
-	Running = 'running',
-	Menu = 'menu'
-}
+type GameState = 'Running' | 'Menu'
 
 export default function WordBomb() {
 	const socket = useSockets()
-	const { setBackAction, getDefaultBackAction } = useGameInfo()!
+	const { isHost } = useRoomData()!
+	const { players } = useUsers()!
+	const { gameData, setBackAction, getDefaultBackAction } = useGameInfo()!
 
-	const [gameState, setGameState] = useState<GameState>(GameState.Menu)
+	const [gameState, setGameState] = useState<GameState>('Menu')
 	const [winner, setWinner] = useState<string | null>(null)
 	const [settings, setSettings] = useState<Settings>({
 		timeLimit: 10,
 		lives: 3,
-		minWordLength: 3
+		minWordLength: 3,
+		passLettersTimes: 2
 	})
 
+	const [letterList, setLetterList] = useState<string[]>([])
+
 	useEffect(() => {
-		socket.on(EVENTS.CLIENT.fromServer.Games.WordGame.runningStateAction, (settings) => {
-			setSettings(settings)
-			setGameState(GameState.Running)
-		})
-		socket.on(EVENTS.CLIENT.fromServer.Games.WordGame.menuStateAction, () => {
-			setGameState(GameState.Menu)
-		})
+		const listeners = [
+			socket.onEvent('Game-changeStateAction', (newState: GameState, settings: Settings) => {
+				newState == 'Running' && setSettings(settings)
+				setGameState(newState)
+			}),
+			socket.onEvent('Game-WordGame-setLetterList', setLetterList)
+		]
 
 		return () => {
-			socket.removeAllListeners(EVENTS.CLIENT.fromServer.Games.WordGame.runningStateAction)
-			socket.removeAllListeners(EVENTS.CLIENT.fromServer.Games.WordGame.menuStateAction)
+			listeners.forEach((listener) => listener.off())
 		}
 	}, [])
 
 	useEffect(() => {
-		gameState === GameState.Menu
-			? setBackAction(getDefaultBackAction)
-			: setBackAction(() => {
-					return () => {
-						socket.emit(EVENTS.CLIENT.toServer.Games.WordGame.menuStateSignal)
-						setGameState(GameState.Menu)
-					}
-			  })
+		if (gameState === 'Menu') {
+			setBackAction(getDefaultBackAction)
+			isHost && socket.emitEvent('Game-setShouldWait', false)
+		} else {
+			isHost && socket.emitEvent('Game-WordGame-getLetterList', setLetterList)
+			setWinner(null)
+			setBackAction(() => {
+				return () => {
+					socket.emitEvent('Game-changeStateSignal', 'Menu')
+					setGameState('Menu')
+				}
+			})
+			isHost && socket.emitEvent('Game-setShouldWait', true)
+		}
 	}, [gameState])
 
-	return gameState === GameState.Running ? (
+	return gameState === 'Running' ? (
 		<Running
 			setMenu={(winner: string | null) => {
 				setWinner(winner)
-				setGameState(GameState.Menu)
+				setGameState('Menu')
 			}}
-			{...{ settings }}
+			{...{ settings, letterList }}
 		/>
-	) : gameState === GameState.Menu ? (
+	) : gameState === 'Menu' ? (
 		<Menu
 			setRunning={() => {
-				socket.emit(EVENTS.CLIENT.toServer.Games.WordGame.runningStateSignal, settings)
-				setGameState(GameState.Running)
+				if (players.length >= getMinimumRequiredPlayers(gameData.index)) {
+					socket.emitEvent('Game-changeStateSignal', 'Running', settings)
+					setGameState('Running')
+				} else {
+					socket.emitEvent('chatMsgSend', 'system', 'More Players Needed!')
+				}
 			}}
 			{...{
 				winner,

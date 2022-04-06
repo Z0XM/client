@@ -1,26 +1,22 @@
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import EVENTS from '../config/events'
+
 import { useRoomData } from '../context/RoomData.context'
-import { useSockets } from '../context/Socket.context'
+import { gameTitles, getGameSVG, getGameStyle } from './games/games'
+
 import styles from '../styles/GameGrid.module.css'
+import { useSockets } from '../utils/Socket.util'
 
 interface ComponentArgs {
 	loadGame: (index: number) => void
-	gameList: {
-		img: string
-		title: string
-		style: string
-	}[]
-	playInterface: (direction: 'forwards' | 'reverse') => void
 }
 
-export default function GameGrid({ loadGame, gameList, playInterface }: ComponentArgs) {
+export default function GameGrid({ loadGame }: ComponentArgs) {
 	const socket = useSockets()
 	const { isHost } = useRoomData()!
 
 	const [votedFor, setVotedFor] = useState(-1)
-	const [votes, setVotes] = useState([...Array(gameList.length).fill(0)])
+	const [votes, setVotes] = useState([...Array(gameTitles.length).fill(0)])
 
 	function calcAndSetNewVotes(oldVote: number, newVote: number) {
 		setVotes((oldVotes) => {
@@ -32,10 +28,10 @@ export default function GameGrid({ loadGame, gameList, playInterface }: Componen
 	}
 
 	useEffect(() => {
-		socket.on(EVENTS.CLIENT.fromServer.voteGameAction, calcAndSetNewVotes)
+		const listener = socket.onEvent('voteGameAction', calcAndSetNewVotes)
 
 		return () => {
-			socket.removeAllListeners(EVENTS.CLIENT.fromServer.voteGameAction)
+			listener.off()
 		}
 	}, [])
 
@@ -44,12 +40,12 @@ export default function GameGrid({ loadGame, gameList, playInterface }: Componen
 		const newVote = oldVote === index ? -1 : index
 		calcAndSetNewVotes(oldVote, newVote)
 		setVotedFor(newVote)
-		socket.emit(EVENTS.CLIENT.toServer.voteGameSignal, oldVote, newVote)
+		socket.emitEvent('voteGameSignal', oldVote, newVote)
 	}
 
 	return (
 		<div className={styles.grid}>
-			{gameList.map((game, index) => {
+			{gameTitles.map((title, index) => {
 				return (
 					<button
 						className={styles.cell}
@@ -58,11 +54,11 @@ export default function GameGrid({ loadGame, gameList, playInterface }: Componen
 							e.preventDefault()
 							isHost ? loadGame(index) : voteFor(index)
 						}}>
-						<div className={styles.image + ' ' + game.style}>
-							<Image src={game.img} width='300' height='180' alt='' />
+						<div className={styles.image + ' ' + getGameStyle(index)}>
+							<Image src={getGameSVG(index)} width='300' height='180' alt='' />
 						</div>
 						<div className={styles.title}>
-							{game.title} {votes[index] > 0 && <span>&#10084; {votes[index]}</span>}
+							{title} {votes[index] > 0 && <span>&#10084; {votes[index]}</span>}
 						</div>
 					</button>
 				)
