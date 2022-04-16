@@ -164,12 +164,12 @@ export default function Running({ setMenu, settings, letterList }: ComponentArgs
 			})
 		]
 
-		// const interval = setInterval(() => {
-		// 	setTimeLeft((_) => _ - 1)
-		// }, 1000)
+		const interval = setInterval(() => {
+			setTimeLeft((_) => _ - 1)
+		}, 1000)
 
 		return () => {
-			//clearInterval(interval)
+			clearInterval(interval)
 			listeners.forEach((listener) => listener.off())
 		}
 	}, [])
@@ -198,10 +198,10 @@ export default function Running({ setMenu, settings, letterList }: ComponentArgs
 	return (
 		<div className={styles.container}>
 			<div className={styles.players}>
-				{playersInGame.map((player, index) => {
-					const theta = (2 * Math.PI) / playersInGame.length
-					const cos = Math.cos(index * theta)
-					const sin = Math.sin(index * theta)
+				{playersInGame.map((player, index, arr) => {
+					const theta = (2 * Math.PI) / arr.length
+					const cos = -Math.cos(((index - turn + arr.length) % arr.length) * theta + Math.PI / 2)
+					const sin = Math.sin(((index - turn + arr.length) % arr.length) * theta + Math.PI / 2)
 					const r = 120
 					const rcos = r * cos
 					const rsin = r * sin

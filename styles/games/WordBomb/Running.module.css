@@ -25,6 +25,7 @@
 	font-size: 1.5em;
 	font-weight: bolder;
     
+    transition: transform 100ms ease-out;
 }
 
 .game {

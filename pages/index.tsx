@@ -24,7 +24,7 @@ const MainPage: NextPage = () => {
 		status?: number
 		shouldWait?: boolean
 	}) {
-		window.localStorage.setItem('userName', userName.toUpperCase())
+		window.localStorage.setItem('userName', userName)
 		response.isError
 			? setErrorLog(response.errorMsg!)
 			: router.replace(
@@ -38,11 +38,11 @@ const MainPage: NextPage = () => {
 	}
 
 	const createRoom = () => {
-		socket.emitEvent('createRoom', userName.toUpperCase(), handleResponse)
+		socket.emitEvent('createRoom', userName, handleResponse)
 	}
 
 	const joinRoom = (roomCode: string) => {
-		socket.emitEvent('joinRoom', roomCode, userName.toUpperCase(), handleResponse)
+		socket.emitEvent('joinRoom', roomCode, userName, handleResponse)
 	}
 
 	useEffect(() => {
