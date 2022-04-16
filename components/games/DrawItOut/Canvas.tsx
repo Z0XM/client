@@ -111,7 +111,7 @@ export default function Canvas({ canDraw }: ComponentArgs) {
 					setPainting(false)
 					setPrevMouseXY({ prevX: -1, prevY: -1 })
 				}}
-				onMouseMove={draw}
+				onMouseMove={(e) => canDraw && draw(e)}
 			/>
 			{canDraw && (
 				<div className={styles.tools}>

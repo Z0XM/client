@@ -62,11 +62,12 @@ export default function Chat({ playerListVisible }: ComponentArgs) {
 							}
 							key={index}>
 							<div className={styles.msgArea}>
-								{index > 0 && chat.sender != arr[index - 1].sender && chat.sender != 'system' && (
-									<div className={styles.sender}>
-										{chat.sender === 'self' ? userName : chat.sender}
-									</div>
-								)}
+								{index == 0 ||
+									(index > 0 && chat.sender != arr[index - 1].sender && chat.sender != 'system' && (
+										<div className={styles.sender}>
+											{chat.sender === 'self' ? userName : chat.sender}
+										</div>
+									))}
 								<div className={styles.msg}>{chat.msg}</div>
 							</div>
 						</div>

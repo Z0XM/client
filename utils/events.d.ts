@@ -1,7 +1,7 @@
 export type SocketListener = (...args: any[]) => void
 
 type WordGameToServer = 'submitWordSignal' | 'isWordReal' | 'currentWordSignal' | 'getLetterList'
-type DrawItOutToServer = 'drawSignal' | 'clearSignal' | 'startTurnSignal' | 'guessedSignal'
+type DrawItOutToServer = 'drawSignal' | 'clearSignal' | 'setWordSignal' | 'guessedSignal'
 
 type GamesToServer =
 	| `WordGame-${WordGameToServer}`
@@ -26,7 +26,7 @@ export type EventToServer =
 	| `Game-${GamesToServer}`
 
 type WordGameFromServer = 'submitWordAction' | 'currentWordAction' | 'setLetterList'
-type DrawItOutFromServer = 'drawAction' | 'clearAction' | 'startTurnAction' | 'guessedAction'
+type DrawItOutFromServer = 'drawAction' | 'clearAction' | 'setWordAction' | 'guessedAction'
 
 type GamesFromServer =
 	| `WordGame-${WordGameFromServer}`

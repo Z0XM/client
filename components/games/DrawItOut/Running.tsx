@@ -198,6 +198,7 @@ export default function Running({ setMenu, settings }: ComponentArgs) {
 		if (timer == 0) {
 			if (screenState == 'choices') {
 				onSetCanvas(choices[0])
+				socket.emitEvent('Game-DrawItOut-setWordSignal', choices[0])
 			} else if (screenState == 'canvas') {
 				onSetScores()
 			} else if (screenState == 'scores') {
@@ -208,7 +209,7 @@ export default function Running({ setMenu, settings }: ComponentArgs) {
 
 	useEffect(() => {
 		const listeners = [
-			socket.onEvent('Game-DrawItOut-startTurnAction', onSetCanvas),
+			socket.onEvent('Game-DrawItOut-setWordAction', onSetCanvas),
 			socket.onEvent('Game-DrawItOut-guessedAction', onWordGuessed),
 			socket.onEvent('playerLeft', onPlayerLeft)
 		]
@@ -229,7 +230,9 @@ export default function Running({ setMenu, settings }: ComponentArgs) {
 			<div className={styles.canvas_flex}>
 				<Canvas canDraw={canDraw} />
 				<div className={styles.clock}>{timer}</div>
-				{playersInGame[turn].userId == userId && <div className={styles.word}>{word}</div>}
+				<div className={styles.word}>
+					{playersInGame[turn].userId == userId ? word : '_'.repeat(word.length)}
+				</div>
 			</div>
 			{screenState == 'choices' && playersInGame[turn].userId == userId && (
 				<div className={styles.choices_area}>
@@ -238,7 +241,7 @@ export default function Running({ setMenu, settings }: ComponentArgs) {
 							<button
 								onClick={() => {
 									onSetCanvas(choice)
-									socket.emitEvent('Game-DrawItOut-startTurnSignal', choice)
+									socket.emitEvent('Game-DrawItOut-setWordSignal', choice)
 								}}
 								key={index}>
 								{choice}
