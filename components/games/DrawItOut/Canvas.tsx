@@ -99,6 +99,13 @@ export default function Canvas({ canDraw }: ComponentArgs) {
 		}
 	}, [])
 
+	useEffect(() => {
+		if (!canDraw) {
+			setPainting(false)
+			setPrevMouseXY({ prevX: -1, prevY: -1 })
+		}
+	}, [canDraw])
+
 	return (
 		<>
 			<canvas

@@ -112,13 +112,13 @@
 	top: 5%;
 
 	font-family: 'Fredoka';
-	font-size: x-large;
+    font-size: max(3vh, 0.7em);
 	font-weight: bold;
 
 	background-color: #9847ee;
 	text-align: center;
 	border-bottom-left-radius: 10px;
-	padding: 10px;
+	padding: 3%;
 	color: black;
 	border: none;
 	overflow: hidden;
@@ -141,8 +141,8 @@
 }
 
 
-@media only screen and (max-width: 950px) {
+@media only screen and (max-width: 950px)  {
     .input_container textarea::placeholder {
-        font-size: medium;
+        font-size: small;
     }
 }

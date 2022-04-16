@@ -27,7 +27,6 @@ export default function PlayerList({ playerListVisible, togglePlayerVisiblity }:
 				</button>
 			</div>
 			<div className={styles.player_list + ' ' + (playerListVisible ? styles.open : styles.close)}>
-				{/* <div className={styles.hostName}>{users.host.userName}</div> */}
 				{users.players.map((user, index) => {
 					return user.userId != users.host.userId ? (
 						<div className={styles.playerName} key={index}>

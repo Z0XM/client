@@ -11,14 +11,13 @@ export default function Navbar() {
 			<button className={styles.title} onClick={() => router.replace('/')}>
 				ZAMES
 			</button>
-			<div className={styles.link}>
-				<button
-					onClick={(e) => {
-						navigator.clipboard.writeText(`https://${window.location.host}/?code=${code}`)
-					}}>
-					&#128203; Copy Link
-				</button>
-			</div>
+			<button
+				className={styles.link}
+				onClick={(e) => {
+					navigator.clipboard.writeText(`https://${window.location.host}/?code=${code}`)
+				}}>
+				&#128203; Copy Link
+			</button>
 		</div>
 	)
 }
