@@ -2,7 +2,7 @@ import gameStyles from '../../styles/games/GameTitles.module.css'
 
 export const gameTitles = [
 	'WordBomb',
-	'ComingSoon',
+	'DrawItOut',
 	'ComingSoon',
 	'ComingSoon',
 	'ComingSoon',
@@ -16,8 +16,8 @@ export function getGameSVG(index: number) {
 	return `/svg/${gameTitles[index]}.svg`
 }
 
-export function getGameStyle(index: number) {
-	return gameStyles[gameTitles[index]]
+export function getGameStyle(index: number, forMenu: boolean) {
+	return gameStyles[gameTitles[index]] + (forMenu ? ' ' + gameStyles.Menu : '')
 }
 
 export function getMinimumRequiredPlayers(index: number) {

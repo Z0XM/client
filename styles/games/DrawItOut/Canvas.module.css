@@ -1,0 +1,113 @@
+.canvas{
+    position: absolute;
+    width:100%;
+    height:100%;
+    display: block;
+}
+
+.tools{
+    position: absolute;
+    
+    width: fit-content;
+    height:40px;
+    bottom: 0;
+
+    display: flex;
+    justify-content: center;
+
+    background: transparent;
+}
+
+.notColors{
+    width:fit-content;
+    height:auto;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.widthArea,
+.colorArea,
+.extraTools{
+    width: fit-content;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.extraTools {
+    margin-left: 5%;
+}
+.colorArea{
+    margin-left: 4px;
+}
+
+.color,
+.width,
+.colorInput,
+.clear,
+.colorInput input{
+    width:20px;
+    height:20px;
+    border-radius: 50%;
+    border: none;
+    margin-inline: 3px;
+
+    box-shadow: 0px 0px 3px 0px black;
+
+    transition: transform 100ms;
+}
+
+.colorInput{
+    background: radial-gradient(circle closest-side, white, black 90%),
+    conic-gradient(red, #ff8000, yellow, #80ff00, lime, #00ff80, aqua, #0080ff, blue, #8000ff, fuchsia, #ff0080, red);
+    background-blend-mode: screen;    
+}
+
+.color:hover,
+.width:hover,
+.colorInput:hover,
+.clear:hover{
+    transform: scale(1.3);
+}
+
+.color.selected,
+.width.selected,
+.colorInput.selected,
+.clear.selected {
+    transform: scale(1.4);
+}
+
+.colorInput input{
+    opacity: 0;
+}
+.colorInput input:hover{
+    cursor: pointer;
+}
+
+
+.clear{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color:red;
+    background: transparent;
+    font-size: 1.3em;
+    box-shadow: none;
+}
+
+@media only screen and (max-width: 850px) {
+    .tools {
+        width: 100%;
+        height: 50px;
+        bottom: 3px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        background: transparent;
+    }
+}

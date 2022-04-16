@@ -2,13 +2,12 @@ import { HTMLAttributes, useEffect, useReducer, useRef, useState } from 'react'
 
 import { useGameInfo } from '../../../context/GameInfo.context'
 
-import styles from '../../../styles/games/WordGame/Running.module.css'
+import styles from '../../../styles/games/WordBomb/Running.module.css'
 import { useSockets } from '../../../utils/Socket.util'
 import { useUserId } from '../../../utils/UserId.util'
 
 import { Settings, RunningVariables, GameAction, GameEventData } from './types'
 
-import { GetServerSideProps } from 'next'
 import { useUsers } from '../../../context/Users.context'
 
 interface ComponentArgs {
@@ -77,16 +76,10 @@ function handleGameEvents(state: RunningVariables, action: GameAction): RunningV
 	return state
 }
 
-function generateLetters(letterlist: string[], currentLetters: string) {
-	const lettersToChooseFrom = letterlist.filter((value, index) => value != currentLetters)
-	return lettersToChooseFrom[Math.floor(Math.random() * lettersToChooseFrom.length)]
-}
-
 export default function Running({ setMenu, settings, letterList }: ComponentArgs) {
 	const socket = useSockets()
 	const userId = useUserId()
 	const { players } = useUsers()!
-	const { shiftToAndEmit } = useUsers()!
 
 	const [word, setWord] = useState('')
 	const [clockHandAngle, setClockHandAngle] = useState(0)
@@ -171,12 +164,12 @@ export default function Running({ setMenu, settings, letterList }: ComponentArgs
 			})
 		]
 
-		const interval = setInterval(() => {
-			setTimeLeft((_) => _ - 1)
-		}, 1000)
+		// const interval = setInterval(() => {
+		// 	setTimeLeft((_) => _ - 1)
+		// }, 1000)
 
 		return () => {
-			clearInterval(interval)
+			//clearInterval(interval)
 			listeners.forEach((listener) => listener.off())
 		}
 	}, [])
@@ -188,7 +181,7 @@ export default function Running({ setMenu, settings, letterList }: ComponentArgs
 				data: {
 					newLetterIndex: (letterIndex + 1) % letterList.length
 				},
-				function: { resetTime, shiftToAndEmit },
+				function: { resetTime },
 				settings
 			})
 			setWord('')
@@ -206,17 +199,19 @@ export default function Running({ setMenu, settings, letterList }: ComponentArgs
 		<div className={styles.container}>
 			<div className={styles.players}>
 				{playersInGame.map((player, index) => {
+					const theta = (2 * Math.PI) / playersInGame.length
+					const cos = Math.cos(index * theta)
+					const sin = Math.sin(index * theta)
+					const r = 120
+					const rcos = r * cos
+					const rsin = r * sin
+					const style = { transform: `translate(${rcos}px,${rsin}px)`, fontSize: '', color: '' }
+					if (index == turn) {
+						style.fontSize = '2em'
+						style.color = 'limegreen'
+					} else if (!player.lives) style.color = 'gray'
 					return (
-						<p
-							className={styles.player}
-							key={index}
-							style={
-								(index == turn
-									? { fontSize: '2em', color: 'limegreen' }
-									: !player.lives
-									? { color: 'gray' }
-									: null) as HTMLAttributes<HTMLParagraphElement>
-							}>
+						<p className={styles.player} key={index} style={style}>
 							{player.userName}
 							<span> </span>
 							{[...Array(player.lives)].map((v, i) => {

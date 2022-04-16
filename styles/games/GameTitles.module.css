@@ -1,4 +1,5 @@
 .WordBomb {
+    content: url(../../public/svg/WordBomb.svg);
 	filter: invert(97%) sepia(4%) saturate(2261%) hue-rotate(196deg) brightness(115%) contrast(80%);
 	transform: scale(1.2);
 	transform-origin: center;
@@ -9,28 +10,60 @@
 	animation: shake 250ms linear;
 }
 
-@keyframes shake {
-	0% {
-		transform: rotateZ(0deg) scale(1.2) translateX(0);
-	}
-	20% {
-		transform: rotateZ(5deg) scale(1.2) translateX(10px);
-	}
-
-	40% {
-		transform: rotateZ(-5deg) scale(1.2) translateX(-10px);
-	}
-	60% {
-		transform: rotateZ(2.5deg) scale(1.2) translateX(5px);
-	}
-	80% {
-		transform: rotateZ(-2.5deg) scale(1.2) translateX(-5px);
-	}
-	100% {
-		transform: rotateZ(0deg) scale(1.2) translateX(0);
-	}
+.WordBomb.Menu{
+    transform: scale(1.5);
+    margin-bottom: 20px;
 }
 
+@keyframes shake {
+    0% {
+        transform: rotateZ(0deg) scale(1.2) translateX(0);
+    }
+
+    20% {
+        transform: rotateZ(5deg) scale(1.2) translateX(10px);
+    }
+
+    40% {
+        transform: rotateZ(-5deg) scale(1.2) translateX(-10px);
+    }
+
+    60% {
+        transform: rotateZ(2.5deg) scale(1.2) translateX(5px);
+    }
+
+    80% {
+        transform: rotateZ(-2.5deg) scale(1.2) translateX(-5px);
+    }
+
+    100% {
+        transform: rotateZ(0deg) scale(1.2) translateX(0);
+    }
+}
+
+.DrawItOut {
+    content: url(../../public/svg/DrawItOut.svg);
+    transform-origin: center;
+    box-shadow: 0 0 10px 10px var(--clr-russian-violet) inset;
+    background:linear-gradient(to right,red, #ff8000, yellow, #80ff00, lime, #00ff80, aqua, #0080ff, blue, #8000ff, fuchsia, #ff0080, red);
+    background-size: 500%;
+    transition: background 1s ease-in-out;
+}
+.DrawItOut:hover{
+    background-position: 100%;
+}
+.DrawItOut.Menu{
+    transform: scale(0.8);
+    box-shadow: none;
+    border-radius: 10px;
+    border: 5px solid black;
+}
+
+
 .ComingSoon {
+    background: url(../../public/svg/ComingSoon.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: 50%;
 	filter: invert(64%) sepia(71%) saturate(3172%) hue-rotate(225deg) brightness(100%) contrast(102%);
 }

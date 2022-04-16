@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useGameInfo } from '../../../context/GameInfo.context'
 import { useRoomData } from '../../../context/RoomData.context'
 
-import styles from '../../../styles/games/WordGame/Menu.module.css'
+import styles from '../../../styles/games/WordBomb/Menu.module.css'
 
 import { Settings } from './types'
 import { useSockets } from '../../../utils/Socket.util'
@@ -66,9 +66,7 @@ export default function Menu({ setRunning, winner, settings, setSettings }: Comp
 
 	return (
 		<div className={styles.container}>
-			<div className={gameData.style} style={{ opacity: '0.8' }}>
-				<Image src={gameData.img} width='300' height='180' alt='' />
-			</div>
+			<div className={gameData.style} style={{ opacity: '0.8' }}></div>
 			{winner !== null && <div className={styles.winner}>{`${winner} Won!`}</div>}
 			<button
 				className={styles.settings}
@@ -93,7 +91,7 @@ export default function Menu({ setRunning, winner, settings, setSettings }: Comp
 				</button>
 			)}
 
-			<div style={{ visibility: settingsVisibility }} className={styles.settings_area}>
+			<div className={styles.settings_area} style={{ visibility: settingsVisibility }}>
 				<button
 					className={styles.close}
 					onClick={() => {

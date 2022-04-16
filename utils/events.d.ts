@@ -1,8 +1,14 @@
 export type SocketListener = (...args: any[]) => void
 
-type WordGameToServer = 'submitWordSignal' | 'isWordReal' | 'currentWordSignal' | 'timeOverSignal' | 'getLetterList'
+type WordGameToServer = 'submitWordSignal' | 'isWordReal' | 'currentWordSignal' | 'getLetterList'
+type DrawItOutToServer = 'drawSignal' | 'clearSignal' | 'startTurnSignal' | 'guessedSignal'
 
-type GamesToServer = `WordGame-${WordGameToServer}` | 'changeStateSignal' | 'shiftTo' | 'setShouldWait'
+type GamesToServer =
+	| `WordGame-${WordGameToServer}`
+	| `DrawItOut-${DrawItOutToServer}`
+	| 'changeStateSignal'
+	| 'shiftTo'
+	| 'setShouldWait'
 
 export type EventToServer =
 	| 'test'
@@ -19,9 +25,14 @@ export type EventToServer =
 	| 'deleteRoom'
 	| `Game-${GamesToServer}`
 
-type WordGameFromServer = 'submitWordAction' | 'currentWordAction' | 'timeOverAction' | 'setLetterList'
+type WordGameFromServer = 'submitWordAction' | 'currentWordAction' | 'setLetterList'
+type DrawItOutFromServer = 'drawAction' | 'clearAction' | 'startTurnAction' | 'guessedAction'
 
-type GamesFromServer = `WordGame-${WordGameFromServer}` | 'changeStateAction' | 'dismissWaiting'
+type GamesFromServer =
+	| `WordGame-${WordGameFromServer}`
+	| `DrawItOut-${DrawItOutFromServer}`
+	| 'changeStateAction'
+	| 'dismissWaiting'
 
 export type EventFromServer =
 	| 'test'

@@ -1,7 +1,9 @@
 .container {
 	position: relative;
-	width: 100%;
+    width: 95%;
 	height: 100%;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
 
 	display: flex;
 	flex-direction: column;

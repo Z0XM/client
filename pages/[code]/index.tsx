@@ -14,6 +14,8 @@ import { useSockets } from '../../utils/Socket.util'
 
 import { User, Users, UsersContext } from '../../context/Users.context'
 import { useUserId } from '../../utils/UserId.util'
+import { debounce } from '../../utils/general'
+import { Chat, ChatContext } from '../../context/Chat.context'
 
 export default function Room() {
 	const router = useRouter()
@@ -29,6 +31,10 @@ export default function Room() {
 	const [host, setHost] = useState<User>({ userId: '', userName: '' })
 	const [players, setPlayers] = useState<User[]>([])
 	const [spectators, setSpectators] = useState<User[]>([])
+
+	const [chats, setChats] = useState<{ sender: string; msg: string }[]>([])
+	const [chatDisabled, setChatDisabled] = useState(false)
+	const [chatAutoEmit, setChatAutoEmit] = useState(true)
 
 	const [gameIndex, setGame] = useState(parseInt(router.query.status as string))
 
@@ -80,16 +86,7 @@ export default function Room() {
 			setSpectators(users.spectators)
 		}
 
-		function debounce(cb: any, delay: number) {
-			let timeout: any
-			return (...args: any[]) => {
-				clearTimeout(timeout)
-				timeout = setTimeout(() => {
-					cb(...args)
-				}, delay)
-			}
-		}
-		const refreshUsers = debounce(() => socket.emitEvent('getUsers', setUsers), 500)
+		const refreshUsers = debounce(() => socket.emitEvent('getUsers', setUsers), 100)
 
 		socket.emitEvent('getUsers', setUsers)
 
@@ -109,7 +106,17 @@ export default function Room() {
 		<RoomDataContext.Provider value={roomData}>
 			<Navbar />
 			<UsersContext.Provider value={{ host, players, spectators, shiftToAndEmit }}>
-				<ChatPane />
+				<ChatContext.Provider
+					value={{
+						chats,
+						addChat: (chat: Chat) => setChats((old) => [...old, chat]),
+						chatDisabled,
+						disableChat: (disable: boolean) => setChatDisabled(disable),
+						chatAutoEmit,
+						disableChatAutoEmit: (disable: boolean) => setChatAutoEmit(!disable)
+					}}>
+					<ChatPane />
+				</ChatContext.Provider>
 				<div className={styles.container}>
 					<div className={styles.area}>
 						<div
@@ -119,7 +126,17 @@ export default function Room() {
 						{gameIndex === -1 ? (
 							<GameGrid {...{ loadGame }} />
 						) : (
-							<GameArea loadGameList={() => loadGame(-1)} {...{ gameIndex }} />
+							<ChatContext.Provider
+								value={{
+									chats,
+									addChat: (chat: Chat) => setChats((old) => [...old, chat]),
+									chatDisabled,
+									disableChat: (disable: boolean) => setChatDisabled(disable),
+									chatAutoEmit,
+									disableChatAutoEmit: (disable: boolean) => setChatAutoEmit(!disable)
+								}}>
+								<GameArea loadGameList={() => loadGame(-1)} {...{ gameIndex }} />
+							</ChatContext.Provider>
 						)}
 					</div>
 				</div>

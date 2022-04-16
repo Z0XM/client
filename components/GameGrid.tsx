@@ -54,9 +54,7 @@ export default function GameGrid({ loadGame }: ComponentArgs) {
 							e.preventDefault()
 							isHost ? loadGame(index) : voteFor(index)
 						}}>
-						<div className={styles.image + ' ' + getGameStyle(index)}>
-							<Image src={getGameSVG(index)} width='300' height='180' alt='' />
-						</div>
+						<div className={styles.image + ' ' + getGameStyle(index, false)}></div>
 						<div className={styles.title}>
 							{title} {votes[index] > 0 && <span>&#10084; {votes[index]}</span>}
 						</div>

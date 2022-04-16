@@ -2,9 +2,9 @@ import { io, Socket } from 'socket.io-client'
 
 import { EventFromServer, EventToServer, SocketListener } from './events'
 
-const socket = io('https://zames-server.herokuapp.com/')
+const socket = io('https://zames-server.herokuapp.com/') // 'http://localhost:2000' 'https://zames-server.herokuapp.com/'
 
-class onEventHandler {
+export class onEventHandler {
 	private event: EventFromServer
 	private listener: SocketListener
 

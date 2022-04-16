@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
+import { useChats } from '../../context/Chat.context'
 import { useRoomData } from '../../context/RoomData.context'
 
 import styles from '../../styles/chatPane/Chat.module.css'
 import { useSockets } from '../../utils/Socket.util'
+import { useUserId } from '../../utils/UserId.util'
 
 interface ComponentArgs {
 	playerListVisible: boolean
@@ -11,15 +13,14 @@ interface ComponentArgs {
 export default function Chat({ playerListVisible }: ComponentArgs) {
 	const socket = useSockets()
 	const { userName } = useRoomData()!
+	const { chats, addChat, chatDisabled, chatAutoEmit } = useChats()!
 
 	const messageAreaRef = useRef<HTMLDivElement>(null)
 	const textAreaRef = useRef<HTMLTextAreaElement>(null)
 
-	const [chats, setChats] = useState<{ sender: string; msg: string }[]>([])
-
 	useEffect(() => {
 		const listener = socket.onEvent('chatMsgReceive', (sender, msg) => {
-			setChats((oldChats) => [...oldChats, { sender, msg }])
+			addChat({ sender, msg })
 		})
 
 		if (messageAreaRef.current) {
@@ -38,8 +39,10 @@ export default function Chat({ playerListVisible }: ComponentArgs) {
 	}, [])
 
 	function sendText(msg: string) {
-		socket.emitEvent('chatMsgSend', userName, msg)
-		setChats((oldChats) => [...oldChats, { sender: 'self', msg }])
+		if (!chatDisabled) {
+			if (chatAutoEmit) socket.emitEvent('chatMsgSend', userName, msg)
+			addChat({ sender: userName, msg })
+		}
 	}
 
 	return (
@@ -47,21 +50,23 @@ export default function Chat({ playerListVisible }: ComponentArgs) {
 			<div
 				ref={messageAreaRef}
 				className={styles.messages + ' ' + (playerListVisible ? styles.close : styles.open)}>
-				{chats.map((chat, index) => {
+				{chats.map((chat, index, arr) => {
 					return (
 						<div
 							className={
 								chat.sender === 'system'
 									? styles.system
-									: chat.sender === 'self'
+									: chat.sender === userName
 									? styles.self
 									: styles.other
 							}
 							key={index}>
 							<div className={styles.msgArea}>
-								<div className={styles.sender}>
-									{chat.sender === 'system' ? '' : chat.sender === 'self' ? userName : chat.sender}
-								</div>
+								{index > 0 && chat.sender != arr[index - 1].sender && chat.sender != 'system' && (
+									<div className={styles.sender}>
+										{chat.sender === 'self' ? userName : chat.sender}
+									</div>
+								)}
 								<div className={styles.msg}>{chat.msg}</div>
 							</div>
 						</div>
@@ -79,6 +84,7 @@ export default function Chat({ playerListVisible }: ComponentArgs) {
 							textAreaRef.current!.value = ''
 						}
 					}}
+					disabled={chatDisabled}
 				/>
 			</form>
 		</>

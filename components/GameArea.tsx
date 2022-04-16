@@ -8,6 +8,7 @@ import styles from '../styles/GameArea.module.css'
 
 import { GameInfoContext } from '../context/GameInfo.context'
 import { gameTitles, getGameStyle, getGameSVG } from './games/games'
+import DrawItOut from './games/DrawItOut/DrawItOut'
 
 interface ComponentArgs {
 	loadGameList: () => void
@@ -33,12 +34,13 @@ function GameArea({ loadGameList, gameIndex }: ComponentArgs) {
 							index: gameIndex,
 							title: gameTitles[gameIndex],
 							img: getGameSVG(gameIndex),
-							style: getGameStyle(gameIndex)
+							style: getGameStyle(gameIndex, true)
 						},
 						setBackAction,
 						getDefaultBackAction
 					}}>
 					{gameIndex == 0 && <WordBomb />}
+					{gameIndex == 1 && <DrawItOut />}
 				</GameInfoContext.Provider>
 			</div>
 		</>
