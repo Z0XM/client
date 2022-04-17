@@ -27,10 +27,6 @@ export default function Chat({ playerListVisible }: ComponentArgs) {
 			messageAreaRef.current.addEventListener('DOMNodeInserted', () => {
 				messageAreaRef.current!.scroll({ top: messageAreaRef.current!.scrollHeight, behavior: 'smooth' })
 			})
-
-			messageAreaRef.current.addEventListener('click', () => {
-				textAreaRef.current!.focus()
-			})
 		}
 
 		return () => {

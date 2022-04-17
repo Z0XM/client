@@ -56,6 +56,11 @@
 
 @media only screen and (max-height: 500px) {
     .container {
-        height: 95vh;
+        height: 100vh;
+        top:0vh;
+    }
+
+    .navbar{
+        visibility: hidden;
     }
 }

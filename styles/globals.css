@@ -60,7 +60,8 @@ button:hover {
 
 @media only screen and (max-width: 800px) {
 	body {
-		overflow: scroll;
+		overflow-y: scroll;
+        overflow-x: hidden;
 	}
     html{
         font-size: 12px;
