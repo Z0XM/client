@@ -59,5 +59,6 @@
 @media only screen and (max-height: 500px) {
     .navbar {
         visibility: hidden;
+        height:0vh;
     }
 }
