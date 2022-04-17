@@ -59,8 +59,4 @@
         height: 100vh;
         top:0vh;
     }
-
-    .navbar{
-        visibility: hidden;
-    }
 }

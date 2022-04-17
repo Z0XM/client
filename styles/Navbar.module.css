@@ -56,12 +56,8 @@
 	transform: scale(1.7);
 }
 
-/* @media only screen and (max-height: 500px) {
+@media only screen and (max-height: 500px) {
     .navbar {
-        height: 5vh;
-        min-height: 40px;
+        visibility: hidden;
     }
-    .title {
-        font-size:2.5rem;        
-    }
-} */
+}
