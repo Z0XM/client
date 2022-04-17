@@ -57,6 +57,6 @@
 @media only screen and (max-height: 500px) {
     .container {
         height: 100vh;
-        top:0vh;
+        top:-10vh;
     }
 }
