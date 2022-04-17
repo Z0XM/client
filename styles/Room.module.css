@@ -9,8 +9,9 @@
 }
 .area {
 	position: relative;
-	width: 90%;
-	height: 90%;
+
+	width: calc(100% - 40px);
+	height: calc(100% - 40px);
 
 	background: radial-gradient(var(--clr-russian-violet-2), var(--clr-russian-violet));
 	border-bottom: 2px solid red;
@@ -55,7 +56,6 @@
 
 @media only screen and (max-height: 500px) {
     .container {
-        height: 100vh;
-        top: -10vh;
+        height: 95vh;
     }
 }

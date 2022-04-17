@@ -1,51 +1,59 @@
-.players {
-	position: relative;
-	display: block;
+.container {
+	position: absolute;
+    top:0;
+    display: block;
 	width: 100%;
-	height: 4.5%;
-    min-height: 25px;
-	margin: 0;
-	padding: 0;
-	border-top-left-radius: 10px;
-	background-color: #9847ee;
+    height: 20px;
+
+    background-color: blueviolet;
 }
 
-.topBar{
-    position: relative;
-    width: 100%;
-    height: fit-content;
-    display: flex;
-    justify-content: center;
-
-    font-family: 'Fredoka';
-    font-weight: 900;
-    font-size: 1.2rem;
-    color: black;
+.container.open {
+    animation: playerListOpen 250ms forwards;
 }
 
-.spectators{
-    position: absolute;
+.container.close {
+    animation: playerListClose 250ms forwards;
+}
 
-    left:5%;
+@keyframes playerListOpen {
+    0% {
+        height: 20px;
+    }
+
+    100% {
+        height: 30%;
+    }
+}
+
+@keyframes playerListClose {
+    0% {
+        height: 30%;
+    }
+
+    100% {
+        height: 20px;
+    }
 }
 
 .players_title {
     position: absolute; 
+	width: 100%;
+	height: fit-content;
 
-	margin: 0;
 	border: none;
-	width: fit-content;
-	height: 4.5%;
-	border-top-left-radius: 10px;
-	background-color: #9847ee;
+	background-color:#9847ee;
 	
-    font: inherit;
+    font-family: 'Fredoka';
+    font-weight: 900;
+    font-size: 1.2rem;
 
 	--up-arrow: '\25B2';
 	--down-arrow: '\25BC';
 
     z-index: 1;
 }
+
 .players_title.close::before,
 .players_title.close::after {
 	content: var(--down-arrow);
@@ -60,35 +68,10 @@
 	cursor: pointer;
 }
 
-.players.open {
-	animation: playerListOpen 250ms forwards;
-}
-.players.close {
-	animation: playerListClose 250ms forwards;
-}
-
-@keyframes playerListOpen {
-	0% {
-		height: 4.5%;
-	}
-	100% {
-		height: 25%;
-	}
-}
-
-@keyframes playerListClose {
-	0% {
-		height: 25%;
-	}
-	100% {
-		height: 4.5%;
-	}
-}
-
 .player_list {
     position: relative;
-    top: 10%;
-    height:90%;
+    top: 20px;
+    height: calc(100% - 20px);
 
 	font-family: 'Baloo Bhaijaan 2';
 	font-weight: 450;
@@ -99,12 +82,15 @@
 	grid-template-rows: repeat(auto-fill, auto);
 
     overflow-y: auto;
+    color:white;
 }
-.playerName,
+
+.hostName,
 .spectatorName,
-.hostName {
-	margin: 5px;
-	color: white;
+.playerName{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .hostName:before {

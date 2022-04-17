@@ -1,23 +1,20 @@
 .navbar {
 	position: sticky;
-	width: 80vw;
+	width: 100vw;
 	height: 10vh;
 	background-color: transparent;
 
 	display: flex;
     flex-direction: row;
 	justify-content: center;
-    /* align-items: flex-end; */
-
-	z-index: 1;
+    align-items: flex-end;
 }
 
 .title {
-    min-width: 180px;
+    min-width: 150px;
 	width: 20%;
 	height: fit-content;
 	padding: 0;
-    margin-top: auto;
 
 	font-family: 'Alegreya Sans SC', sans-serif;
 	font-style: italic;
@@ -36,11 +33,10 @@
 
 .link {
     width: fit-content;
-    height: fit-content;
+    height: auto;
     padding: 5px;
     padding-bottom: 3px;
     margin-left: 10px;
-    margin-top: auto;
 
 	font-family: 'Baloo Bhaijaan 2';
 	font-size: 1rem;
@@ -62,6 +58,10 @@
 
 @media only screen and (max-height: 500px) {
     .navbar {
-        visibility:hidden;
+        height: 5vh;
+        min-height: 40px;
+    }
+    .title {
+        font-size:2.5rem;        
     }
 }

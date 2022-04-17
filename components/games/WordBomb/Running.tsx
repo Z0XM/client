@@ -165,7 +165,7 @@ export default function Running({ setMenu, settings, letterList }: ComponentArgs
 		]
 
 		const interval = setInterval(() => {
-			//setTimeLeft((_) => _ - 1)
+			setTimeLeft((_) => _ - 1)
 		}, 1000)
 
 		return () => {

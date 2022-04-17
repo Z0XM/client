@@ -1,146 +1,176 @@
-.messages {
-	width: 100%;
-	overflow-y: auto;
-	overflow-x: hidden;
+.container {
+    position: absolute;
+    width: 100%;
+
+    --closed-height:calc(100% - 20px);
+    --closed-top:20px;
+    --opened-height:70%;
+    --opened-top: 30%;
 }
-.messages.open {
-	animation: messagesExtend 250ms forwards;
+
+.container.open {
+    animation: messagesExtend 250ms forwards;
 }
-.messages.close {
-	animation: messagesCollapse 250ms forwards;
+
+.container.close {
+    animation: messagesCollapse 250ms forwards;
 }
+
 @keyframes messagesCollapse {
-	0% {
-		height: 85.5%;
-	}
-	100% {
-		height: 65%;
-	}
+    0% {
+        height: var(--closed-height);
+        top: var(--closed-top);
+    }
+    
+    100% {
+        height: var(--opened-height);
+        top: var(--opened-top);
+    }
 }
+
 @keyframes messagesExtend {
-	0% {
-		height: 65%;
-	}
-	100% {
-		height: 85.5%;
-	}
+    0% {
+        height: var(--opened-height);
+        top: var(--opened-top);
+    }
+    
+    100% {
+        height: var(--closed-height);
+        top: var(--closed-top);
+    }
+  
 }
+
+.messages {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 50px);
+    padding-top: 2%;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
 .other,
 .self,
 .system {
-	display: flex;
-	flex-direction: row;
+    display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 
-	width: 100%;
-	color: var(--clr-not-white);
-	font-family: 'Fredoka';
-	font-weight: bold;
+    width: 100%;
+    color: var(--clr-not-white);
+    font-family: 'Fredoka';
+    font-weight: bold;
 }
+
 .self {
-	justify-content: right;
-	--clr: var(--clr-blue);
+    justify-content: right;
+    --clr: var(--clr-blue);
 }
+
 .other {
-	justify-content: left;
-	--clr: var(--clr-pink);
+    justify-content: left;
+    --clr: var(--clr-pink);
 }
 
 .msgArea {
-	min-width: 30%;
-	max-width: 60%;
+    min-width: 30%;
+    max-width: 60%;
 
-	display: flex;
-	flex-direction: column;
-	margin: 2% 5%;
+    display: flex;
+    flex-direction: column;
+    margin: 2% 5%;
 }
+
 .system .msgArea {
-	width: 100%;
+    width: 100%;
     max-width: 100%;
-    margin:0;
+    margin: 0;
 }
 
 .other .sender {
-	color: var(--clr);
-	font-weight: bolder;
-	margin-left: 15px;
+    color: var(--clr);
+    font-weight: bolder;
+    margin-left: 15px;
 }
+
 .self .sender {
-	color: var(--clr);
-	font-weight: bolder;
-	text-align: right;
-	margin-right: 15px;
+    color: var(--clr);
+    font-weight: bolder;
+    text-align: right;
+    margin-right: 15px;
 }
 
 .msg {
-	overflow: hidden;
-	overflow-wrap: break-word;
-	padding: 3%;
-	border-radius: 10px;
-	border: 0;
-	border-style: solid;
-	font-size: 1.2rem;
-	font-weight: 350;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    padding: 3%;
+    border-radius: 10px;
+    border: 0;
+    border-style: solid;
+    font-size: 1.2rem;
+    font-weight: 350;
 }
 
 .system .msg {
-	font-size: 1rem;
-	margin: auto;
+    font-size: 1rem;
+    margin: auto;
     padding: 1%;
 }
 
 .other .msg {
-	border-left-color: var(--clr);
-	border-left-width: 3px;
-	text-align: left;
-	background-image: linear-gradient(to right, var(--clr), transparent);
-	padding-left: 10%;
+    border-left-color: var(--clr);
+    border-left-width: 3px;
+    text-align: left;
+    background-image: linear-gradient(to right, var(--clr), transparent);
+    padding-left: 10%;
 }
+
 .self .msg {
-	border-right-color: var(--clr);
-	border-right-width: 3px;
-	text-align: right;
-	background-image: linear-gradient(to left, var(--clr), transparent);
-	padding-right: 10%;
+    border-right-color: var(--clr);
+    border-right-width: 3px;
+    text-align: right;
+    background-image: linear-gradient(to left, var(--clr), transparent);
+    padding-right: 10%;
 }
 
 .input_container {
-	width: 100%;
-	height: 10%;
+    width: 100%;
+    height:50px;
 }
 
 .input_container textarea {
-	position: relative;
-	width: 100%;
-	height: 95%;
-	top: 5%;
+    position: relative;
+    width: 100%;
+    height: 100%;
 
-	font-family: 'Fredoka';
+    font-family: 'Fredoka';
     font-size: 1.3rem;
-	font-weight: bold;
+    font-weight: bold;
 
-	background-color: #9847ee;
-	text-align: center;
-	border-bottom-left-radius: 10px;
-	padding: 3%;
-	color: black;
-	border: none;
-	overflow: hidden;
-	resize: none;
+    background-color: #9847ee;
+    text-align: center;
+    padding: 3%;
+    color: black;
+    border: none;
+    overflow: hidden;
+    resize: none;
 }
 
 .input_container textarea:focus {
-	animation: inputColor 250ms forwards;
-	outline: none;
+    animation: inputColor 250ms forwards;
+    outline: none;
 }
 
 .input_container textarea::placeholder {
-	color: black;
+    color: black;
 }
 
 @keyframes inputColor {
-	100% {
-		background-color: #a159ee;
-	}
+    100% {
+        background-color: #a159ee;
+    }
 }

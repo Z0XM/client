@@ -55,11 +55,11 @@ export default function Canvas({ canDraw }: ComponentArgs) {
 		ctx.closePath()
 	}
 
-	function draw(e: any) {
+	function draw(x: number, y: number) {
 		if (!painting) return
 
-		const mouseX = e.clientX - canvasRef.current!.getBoundingClientRect().left
-		const mouseY = e.clientY - canvasRef.current!.getBoundingClientRect().top
+		const mouseX = x - canvasRef.current!.getBoundingClientRect().left
+		const mouseY = y - canvasRef.current!.getBoundingClientRect().top
 
 		const color = selectedColor == colors.length ? inputColor : colors[selectedColor]
 
@@ -111,14 +111,32 @@ export default function Canvas({ canDraw }: ComponentArgs) {
 			<canvas
 				ref={canvasRef}
 				className={styles.canvas}
-				onMouseDown={() => {
+				onMouseDown={(e) => {
+					e.preventDefault()
 					canDraw && setPainting(true)
 				}}
-				onMouseUp={() => {
+				onTouchStart={(e) => {
+					e.preventDefault()
+					canDraw && setPainting(true)
+				}}
+				onMouseUp={(e) => {
+					e.preventDefault()
 					setPainting(false)
 					setPrevMouseXY({ prevX: -1, prevY: -1 })
 				}}
-				onMouseMove={(e) => canDraw && draw(e)}
+				onTouchEnd={(e) => {
+					e.preventDefault()
+					setPainting(false)
+					setPrevMouseXY({ prevX: -1, prevY: -1 })
+				}}
+				onMouseMove={(e) => {
+					e.preventDefault()
+					canDraw && draw(e.clientX, e.clientY)
+				}}
+				onTouchMove={(e) => {
+					e.preventDefault()
+					canDraw && draw(e.touches[0].clientX, e.touches[0].clientY)
+				}}
 			/>
 			{canDraw && (
 				<div className={styles.tools}>

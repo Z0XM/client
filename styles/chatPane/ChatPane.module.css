@@ -1,19 +1,24 @@
 .container {
 	position: fixed;
 	width: 25%;
-	height: 83vh;
-	top: 11.5vh;
+    top: 0vh;
+	height: 100vh;
 	left: 75%;
-	background-color: rgba(0, 0, 0, 0.5);
-	color: var(--clr-not-white);
-	font-weight: lighter;
-	border-top-left-radius: 15px;
-	border-bottom-left-radius: 15px;
+
+    display: flex;
+    justify-content:left;
+    align-items: center;
 }
 
-@media only screen and (max-height: 500px) {
-    .container {
-        top:3vh;
-        height:95vh;
-    }
+.area{
+    position: relative;
+    width: calc(100% - 20px);
+    height: calc(100% - 40px);
+
+    background-color: rgba(0, 0, 0, 0.5);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

@@ -18,14 +18,12 @@ export default function PlayerList({ playerListVisible, togglePlayerVisiblity }:
 	const users = useUsers()!
 
 	return (
-		<div className={styles.players + ' ' + (playerListVisible ? styles.open : styles.close)}>
-			<div className={styles.topBar}>
-				<button
-					className={styles.players_title + ' ' + (playerListVisible ? styles.open : styles.close)}
-					onClick={togglePlayerVisiblity}>
-					{users.players.length + users.spectators.length} Players
-				</button>
-			</div>
+		<div className={styles.container + ' ' + (playerListVisible ? styles.open : styles.close)}>
+			<button
+				className={styles.players_title + ' ' + (playerListVisible ? styles.open : styles.close)}
+				onClick={togglePlayerVisiblity}>
+				{users.players.length + users.spectators.length} Players
+			</button>
 			<div className={styles.player_list + ' ' + (playerListVisible ? styles.open : styles.close)}>
 				{users.players.map((user, index) => {
 					return user.userId != users.host.userId ? (

@@ -46,7 +46,7 @@ export default function Chat({ playerListVisible }: ComponentArgs) {
 	}
 
 	return (
-		<>
+		<div className={styles.container + ' ' + (playerListVisible ? styles.close : styles.open)}>
 			<div
 				ref={messageAreaRef}
 				className={styles.messages + ' ' + (playerListVisible ? styles.close : styles.open)}>
@@ -88,6 +88,6 @@ export default function Chat({ playerListVisible }: ComponentArgs) {
 					disabled={chatDisabled}
 				/>
 			</form>
-		</>
+		</div>
 	)
 }

@@ -14,8 +14,10 @@ export default function ChatPane() {
 
 	return (
 		<div className={styles.container}>
-			<PlayerList {...{ playerListVisible, togglePlayerVisiblity }} />
-			<Chat {...{ playerListVisible }} />
+			<div className={styles.area}>
+				<PlayerList {...{ playerListVisible, togglePlayerVisiblity }} />
+				<Chat {...{ playerListVisible }} />
+			</div>
 		</div>
 	)
 }
