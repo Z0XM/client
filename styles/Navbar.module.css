@@ -13,7 +13,7 @@
 }
 
 .title {
-    min-width: 200px;
+    min-width: 180px;
 	width: 20%;
 	height: fit-content;
 	padding: 0;
@@ -22,7 +22,7 @@
 	font-family: 'Alegreya Sans SC', sans-serif;
 	font-style: italic;
 	font-weight: 900;
-	font-size:max(7.5vh, 2em);
+	font-size:3rem;
 	text-align: center;
 
 	color: var(--clr-heliotrope);
@@ -43,7 +43,7 @@
     margin-top: auto;
 
 	font-family: 'Baloo Bhaijaan 2';
-	font-size: max(3vh, 1em);
+	font-size: 1rem;
 	font-weight: bold;
 
 	background-color: transparent;
@@ -60,8 +60,8 @@
 	transform: scale(1.7);
 }
 
-@media only screen and (max-width: 800px) {
-   .link{
-       font-size:1em;
-   }
+@media only screen and (max-height: 500px) {
+    .navbar {
+        visibility:hidden;
+    }
 }

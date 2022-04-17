@@ -10,3 +10,10 @@
 	border-top-left-radius: 15px;
 	border-bottom-left-radius: 15px;
 }
+
+@media only screen and (max-height: 500px) {
+    .container {
+        top:3vh;
+        height:95vh;
+    }
+}

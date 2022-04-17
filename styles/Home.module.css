@@ -38,7 +38,7 @@
 	font-family: 'Alegreya Sans SC', sans-serif;
 	font-style: italic;
 	font-weight: 900;
-	font-size: 4em;
+	font-size: 4rem;
 	text-align: center;
 
 	color: var(--clr-heliotrope);
@@ -96,7 +96,7 @@
 
 	font-family: 'Amatic SC';
 	font-weight: 900;
-	font-size: 2.5em;
+	font-size: 2.5rem;
 	margin-top: 10px;
 	margin-bottom: 10px;
 
@@ -116,7 +116,7 @@
 .area_left .create,
 .area_left .play {
 	font-family: 'Bangers';
-	font-size: 2.5em;
+	font-size: 2.5rem;
 	margin-top: 10px;
 	margin-bottom: 10px;
 

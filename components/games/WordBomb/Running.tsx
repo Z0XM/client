@@ -165,7 +165,7 @@ export default function Running({ setMenu, settings, letterList }: ComponentArgs
 		]
 
 		const interval = setInterval(() => {
-			setTimeLeft((_) => _ - 1)
+			//setTimeLeft((_) => _ - 1)
 		}, 1000)
 
 		return () => {
@@ -202,12 +202,16 @@ export default function Running({ setMenu, settings, letterList }: ComponentArgs
 					const theta = (2 * Math.PI) / arr.length
 					const cos = -Math.cos(((index - turn + arr.length) % arr.length) * theta + Math.PI / 2)
 					const sin = Math.sin(((index - turn + arr.length) % arr.length) * theta + Math.PI / 2)
-					const r = 120
+					const r = 18
 					const rcos = r * cos
 					const rsin = r * sin
-					const style = { transform: `translate(${rcos}px,${rsin}px)`, fontSize: '', color: '' }
+					const style = {
+						transform: `translate(calc(${r}vh * ${cos}), calc(${r}vh * ${sin}))`,
+						fontSize: '',
+						color: ''
+					}
 					if (index == turn) {
-						style.fontSize = '2em'
+						style.fontSize = '2rem'
 						style.color = 'limegreen'
 					} else if (!player.lives) style.color = 'gray'
 					return (

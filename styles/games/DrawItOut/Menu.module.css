@@ -37,7 +37,7 @@
 .winner {
 	color: limegreen;
 	font-family: 'Frijole';
-	font-size: 2.5em;
+	font-size: 2.5rem;
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
@@ -45,7 +45,7 @@
 .start,
 .settings {
 	font-family: 'Bangers';
-	font-size: 2.5em;
+	font-size: 2.5rem;
 	margin-top: 10px;
 	margin-bottom: 10px;
 
@@ -69,6 +69,7 @@
 
 .settings_area {
 	position: relative;
+    min-width: fit-content;
 	width: 60%;
 	height: 60%;
 	background: rgb(0 0 0 / 0.8);
@@ -91,7 +92,7 @@
 	border: none;
 
 	color: red;
-	font-size: 2.5em;
+	font-size: 2.5rem;
 
 	margin-left: auto;
 
@@ -108,11 +109,12 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+    padding-inline: 5px;
 
 	color: var(--clr-not-white);
 
 	font-family: 'Baloo Bhaijaan 2';
-	font-size: x-large;
+	font-size: 1.2rem;
 }
 .settings_area .content > div{
     width: 100%;
@@ -125,7 +127,7 @@
 .save {
 	background: transparent;
 	font-family: 'Bangers';
-	font-size: 2em;
+	font-size: 1.8rem;
 	margin-top: 10px;
 	margin-bottom: 20px;
 

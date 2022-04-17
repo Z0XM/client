@@ -31,6 +31,8 @@ body {
 	scroll-behavior: smooth;
 
 	overflow: hidden;
+
+    font-size: 16px;
 }
 
 a {
@@ -60,4 +62,17 @@ button:hover {
 	body {
 		overflow: scroll;
 	}
+    html{
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-height: 600px) {
+    body {
+        overflow: scroll;
+    }
+
+    html {
+        font-size: 12px;
+    }
 }

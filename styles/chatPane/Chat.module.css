@@ -30,6 +30,9 @@
 .system {
 	display: flex;
 	flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
 	width: 100%;
 	color: var(--clr-not-white);
 	font-family: 'Fredoka';
@@ -47,14 +50,15 @@
 .msgArea {
 	min-width: 30%;
 	max-width: 60%;
-	width: auto;
+
 	display: flex;
 	flex-direction: column;
 	margin: 2% 5%;
 }
 .system .msgArea {
 	width: 100%;
-	margin: auto;
+    max-width: 100%;
+    margin:0;
 }
 
 .other .sender {
@@ -76,13 +80,14 @@
 	border-radius: 10px;
 	border: 0;
 	border-style: solid;
-	font-size: 1.2em;
+	font-size: 1.2rem;
 	font-weight: 350;
 }
 
 .system .msg {
-	font-size: 1em;
+	font-size: 1rem;
 	margin: auto;
+    padding: 1%;
 }
 
 .other .msg {
@@ -112,7 +117,7 @@
 	top: 5%;
 
 	font-family: 'Fredoka';
-    font-size: max(3vh, 0.7em);
+    font-size: 1.3rem;
 	font-weight: bold;
 
 	background-color: #9847ee;
@@ -138,11 +143,4 @@
 	100% {
 		background-color: #a159ee;
 	}
-}
-
-
-@media only screen and (max-width: 950px)  {
-    .input_container textarea::placeholder {
-        font-size: small;
-    }
 }

@@ -19,7 +19,7 @@
 
     font-family: 'Fredoka';
     font-weight: 900;
-    font-size: larger;
+    font-size: 1.2rem;
     color: black;
 }
 
@@ -37,7 +37,7 @@
 	width: fit-content;
 	height: 4.5%;
 	border-top-left-radius: 10px;
-	background-color: transparent;
+	background-color: #9847ee;
 	
     font: inherit;
 
@@ -86,15 +86,19 @@
 }
 
 .player_list {
-    padding-top: 20px;
+    position: relative;
+    top: 10%;
+    height:90%;
 
 	font-family: 'Baloo Bhaijaan 2';
 	font-weight: 450;
-	font-size: larger;
+	font-size: 1.2rem;
 	text-align: center;
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(2, 1fr);
 	grid-template-rows: repeat(auto-fill, auto);
+
+    overflow-y: auto;
 }
 .playerName,
 .spectatorName,
@@ -141,5 +145,11 @@
 	100% {
 		opacity: 1;
 	}
+}
+
+@media only screen and (max-width: 950px) {
+    .player_list {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }
 
